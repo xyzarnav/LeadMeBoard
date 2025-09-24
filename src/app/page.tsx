@@ -1,103 +1,337 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Navbar from "@/components/sections/Navbar";
+import BottomNav from "@/components/sections/BottomNav";
+import { 
+  Trophy, 
+  TrendingUp, 
+  Play, 
+  Users, 
+  BarChart3, 
+  Target, 
+  Calendar, 
+  Shield, 
+  Zap,
+  Activity,
+  Brain,
+  Check,
+  Star
+} from "lucide-react";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const features = [
+    {
+      icon: Users,
+      title: "Player Management",
+      description: "Complete player profiles with stats, injuries, contracts, and performance tracking."
+    },
+    {
+      icon: BarChart3,
+      title: "Advanced Analytics",
+      description: "Deep insights into team performance, player statistics, and match analysis."
+    },
+    {
+      icon: Target,
+      title: "Tactical Planning",
+      description: "Create formations, set tactics, and plan strategies with our interactive tools."
+    },
+    {
+      icon: Calendar,
+      title: "Match Scheduling",
+      description: "Organize fixtures, training sessions, and manage your team's calendar."
+    },
+    {
+      icon: Shield,
+      title: "Injury Tracking",
+      description: "Monitor player fitness, track injuries, and manage recovery programs."
+    },
+    {
+      icon: Zap,
+      title: "Real-time Updates",
+      description: "Live match updates, instant notifications, and real-time team communication."
+    },
+    {
+      icon: Trophy,
+      title: "Performance Reports",
+      description: "Detailed reports on individual and team performance with actionable insights."
+    },
+    {
+      icon: Activity,
+      title: "Training Programs",
+      description: "Design and track training sessions, fitness programs, and skill development."
+    },
+    {
+      icon: Brain,
+      title: "AI Recommendations",
+      description: "Smart suggestions for lineups, tactics, and player development based on data."
+    }
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const plans = [
+    {
+      name: "Starter",
+      price: "$29",
+      period: "/month",
+      description: "Perfect for amateur clubs and youth teams",
+      features: [
+        "Up to 25 players",
+        "Basic analytics",
+        "Match scheduling",
+        "Player profiles",
+        "Email support",
+        "Mobile app access"
+      ],
+      popular: false
+    },
+    {
+      name: "Professional",
+      price: "$79",
+      period: "/month",
+      description: "Ideal for semi-professional and professional clubs",
+      features: [
+        "Up to 100 players",
+        "Advanced analytics",
+        "Tactical planning tools",
+        "Injury tracking",
+        "Video analysis",
+        "Priority support",
+        "API access",
+        "Custom reports"
+      ],
+      popular: true
+    },
+    {
+      name: "Enterprise",
+      price: "$199",
+      period: "/month",
+      description: "For large clubs and multi-team organizations",
+      features: [
+        "Unlimited players",
+        "AI-powered insights",
+        "Multi-team management",
+        "Custom integrations",
+        "Dedicated support",
+        "White-label options",
+        "Advanced security",
+        "Training programs"
+      ],
+      popular: false
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-pitch-black">
+      <Navbar />
+      
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-32 overflow-hidden bg-pitch-black">
+        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-black to-pink-500/5" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,136,0.1),transparent_70%)]" />
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-600">
+              <Trophy className="w-4 h-4 mr-2 text-accent-green" />
+              #1 Football Management Platform
+            </Badge>
+
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+              Manage Your <span className="text-accent-green accent-text">Football</span> Team Like a
+              Champion
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Complete football management solution with player analytics, team performance tracking, 
+              match analysis, and strategic planning tools used by professional clubs worldwide.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button size="lg" className="text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all">
+                Start Managing Today
+                <TrendingUp className="ml-2 h-5 w-5" />
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
+                <Play className="mr-2 h-5 w-5" />
+                Watch Demo
+              </Button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {[1,2,3,4,5].map((i) => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-gray-700 border-2 border-black" />
+                  ))}
+                </div>
+                <span>Trusted by 10,000+ coaches</span>
+              </div>
+              <div className="hidden sm:block w-px h-4 bg-gray-700" />
+              <span>⭐ 4.9/5 rating from 2,000+ reviews</span>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 bg-gray-900/50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+              Everything You Need to
+              <span className="text-accent-green"> Win</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Comprehensive tools and features designed specifically for modern football management
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => {
+              const colors = [
+                { bg: 'bg-green-500/10', text: 'text-green-400' },
+                { bg: 'bg-gray-700/50', text: 'text-gray-300' },
+                { bg: 'bg-gray-700/50', text: 'text-gray-300' }
+              ];
+              const colorSet = colors[index % colors.length];
+              
+              return (
+                <Card key={index} className="professional-card group hover:border-gray-600 transition-all duration-300">
+                  <CardHeader>
+                    <div className={`w-12 h-12 rounded-lg ${colorSet.bg} flex items-center justify-center mb-4 transition-all`}>
+                      <feature.icon className={`w-6 h-6 ${colorSet.text}`} />
+                    </div>
+                    <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
+                    <CardDescription className="text-base leading-relaxed text-gray-300">
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 bg-pitch-black">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+              Choose Your
+              <span className="text-accent-green"> Game Plan</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Flexible pricing options to fit teams of all sizes and budgets
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {plans.map((plan, index) => (
+              <Card 
+                key={index} 
+                className={`professional-card relative ${plan.popular ? 'subtle-glow-pink border-green-500/50 scale-105' : ''} transition-all hover:border-gray-600`}
+              >
+                {plan.popular && (
+                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-600 text-white">
+                    <Star className="w-4 h-4 mr-1" />
+                    Most Popular
+                  </Badge>
+                )}
+                
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl text-white">{plan.name}</CardTitle>
+                  <div className="flex items-baseline justify-center gap-1 mt-4">
+                    <span className="text-4xl font-bold text-accent-green">{plan.price}</span>
+                    <span className="text-gray-400">{plan.period}</span>
+                  </div>
+                  <CardDescription className="text-base mt-2 text-gray-300">
+                    {plan.description}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <Button 
+                    className={`w-full mb-6 ${plan.popular ? 'bg-green-600 text-white hover-glow' : 'border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400'} transition-all`}
+                    variant={plan.popular ? "default" : "outline"}
+                  >
+                    Start Free Trial
+                  </Button>
+
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center gap-3">
+                        <Check className="w-5 h-5 text-accent-green flex-shrink-0" />
+                        <span className="text-sm text-white">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="bg-gray-900/80 py-12 border-t border-gray-700">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Trophy className="h-8 w-8 text-accent-green" />
+                <span className="font-bold text-white">FootballPro</span>
+              </div>
+              <p className="text-sm text-gray-300">
+                The ultimate football management platform for coaches and clubs worldwide.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-white">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-white">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-white">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+            © 2024 <span className="text-accent-green">FootballPro</span>. All rights reserved.
+          </div>
+        </div>
       </footer>
+      
+      {/* Mobile Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }

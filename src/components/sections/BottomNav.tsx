@@ -108,20 +108,18 @@ export default function BottomNav() {
           <div 
             className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 scale-150 ${
               activeTab === "plus" 
-                ? 'opacity-60' 
-                : 'opacity-40 group-hover:opacity-50'
-            }`}
-            style={{ backgroundColor: '#00ff88' }}
+                ? 'opacity-40' 
+                : 'opacity-25 group-hover:opacity-35'
+            } bg-green-500`}
           ></div>
           
           {/* FAB Inner Glow */}
           <div 
             className={`absolute inset-0 rounded-full blur-md transition-all duration-300 scale-125 ${
               activeTab === "plus" 
-                ? 'opacity-80' 
-                : 'opacity-60 group-hover:opacity-70'
-            }`}
-            style={{ backgroundColor: '#00ff88' }}
+                ? 'opacity-50' 
+                : 'opacity-35 group-hover:opacity-45'
+            } bg-green-500`}
           ></div>
           
           {/* Main FAB */}
@@ -132,40 +130,31 @@ export default function BottomNav() {
               setRipple(true);
               setTimeout(() => setRipple(false), 600);
             }}
-            className={`relative rounded-full text-black transform transition-all duration-300 ease-out active:scale-95 overflow-hidden border-2 border-[#00ff88]/30 ${
+            className={`relative rounded-full text-black transform transition-all duration-300 ease-out active:scale-95 overflow-hidden border-2 border-green-400/40 ${
               activeTab === "plus" 
-                ? 'w-16 h-16 scale-110 -translate-y-1 shadow-[0_0_30px_rgba(0,255,136,0.8),0_0_60px_rgba(0,255,136,0.4)]' 
-                : 'w-14 h-14 hover:scale-105 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(0,255,136,0.6),0_0_40px_rgba(0,255,136,0.3)] hover:shadow-[0_0_25px_rgba(0,255,136,0.7),0_0_50px_rgba(0,255,136,0.4)]'
+                ? 'w-16 h-16 scale-110 -translate-y-1 shadow-[0_0_24px_rgba(34,197,94,0.5),0_0_40px_rgba(34,197,94,0.25)]' 
+                : 'w-14 h-14 hover:scale-105 hover:-translate-y-0.5 shadow-[0_0_16px_rgba(34,197,94,0.35),0_0_28px_rgba(34,197,94,0.2)] hover:shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_36px_rgba(34,197,94,0.3)]'
             }`}
-            style={{
-              backgroundColor: '#00ff88',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#00ff99';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#00ff88';
-            }}
+            data-color="green"
           >
-            {/* Inner shine effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/20 to-white/40 opacity-60"></div>
+            <div className="absolute inset-0 rounded-full bg-green-600 hover:bg-green-500 transition-colors duration-300"></div>
             
             {/* Ripple effect */}
-            <div className={`absolute inset-0 bg-accent-green/40 rounded-full transition-all duration-600 ease-out pointer-events-none ${
+            <div className={`absolute inset-0 bg-green-300/40 rounded-full transition-all duration-600 ease-out pointer-events-none ${
               ripple ? 'scale-150 opacity-0' : 'scale-0 opacity-100'
             }`}></div>
             
             {/* Icon */}
-            <Plus className={`relative z-10 stroke-[3] transition-all duration-300 ${
-              activeTab === "plus" ? 'w-7 h-7 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]' : 'w-6 h-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]'
-            }`} />
+            <Plus className={`relative z-10 stroke-[3] text-white transition-all duration-300 ${
+               activeTab === "plus" ? 'w-7 h-7 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]' : 'w-6 h-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]'
+             }`} />
           </Button>
           
           {/* Active state ring */}
           <div className={`absolute inset-0 rounded-full border-2 transition-all duration-500 ease-out ${
             activeTab === "plus" 
-              ? 'border-accent-green/60 scale-125 opacity-100' 
-              : 'border-accent-green/40 scale-115 opacity-0 group-hover:opacity-100 group-hover:scale-130'
+              ? 'border-green-400/50 scale-125 opacity-90' 
+              : 'border-green-400/30 scale-115 opacity-0 group-hover:opacity-80 group-hover:scale-130'
           }`}></div>
         </div>
       </div>

@@ -131,7 +131,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden bg-pitch-black">
+      <section id="bg-section" className="relative mobile-bg md:bg-fixed min-h-[100svh] py-8 lg:py-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-black to-pink-500/5" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,136,0.1),transparent_70%)]" />
         
@@ -147,17 +147,17 @@ export default function Home() {
               Champion
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xs md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Complete football management solution with player analytics, team performance tracking, 
               match analysis, and strategic planning tools used by professional clubs worldwide.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" className="text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all">
+            <div className="flex flex-col sm:flex-row gap-5 sm:gap-4 justify-center mb-12 w-full max-w-[200px] sm:max-w-full mx-auto">
+              <Button size="lg" className="text-s sm:text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all">
                 Start Managing Today
                 <TrendingUp className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
+              <Button size="lg" variant="outline" className="text-s sm:text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
                 <Play className="mr-2 h-5 w-5" />
                 Watch Demo
               </Button>

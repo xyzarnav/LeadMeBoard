@@ -87,7 +87,7 @@ export default function Footer() {
         </div> */}
 
         {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-gray-800/60 gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-left pt-8 border-t border-gray-800/60 gap-4">
           <div className="text-xs sm:text-sm text-gray-400">
             © {new Date().getFullYear()} FootballPro. All rights reserved.
           </div>
@@ -116,7 +116,7 @@ function FooterSection({ title, items }: {
   items: readonly { href: string; label: string; external?: boolean }[] 
 }) {
   return (
-    <div className="text-center sm:text-left">
+    <div className="text-left sm:text-left">
       <h4 className="text-white font-semibold text-sm sm:text-base mb-4 tracking-wide">
         {title}
       </h4>
@@ -125,7 +125,7 @@ function FooterSection({ title, items }: {
           <li key={item.label}>
             <Link 
               href={item.href} 
-              className="text-gray-300 hover:text-white transition-colors duration-200 text-sm sm:text-base flex items-center justify-center sm:justify-start gap-1 group"
+              className="text-gray-300 hover:text-white transition-colors duration-200 text-sm sm:text-base flex items-left  sm:justify-start gap-1 group"
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
             >

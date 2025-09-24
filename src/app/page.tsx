@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +10,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/sections/Navbar";
 import BottomNav from "@/components/sections/BottomNav";
+import SwipeDeck, { type SwipeItem } from "@/components/sections/SwipeDeck";
+import Image from "next/image";
 import { 
   Trophy, 
   TrendingUp, 
@@ -17,16 +20,16 @@ import {
   BarChart3, 
   Target, 
   Calendar, 
-  Shield, 
   Zap,
   Activity,
   Brain,
   Check,
-  Star
+  Star,
+  ArrowRight
 } from "lucide-react";
 
 export default function Home() {
-  const features = [
+  const features: SwipeItem[] = [
     {
       icon: Users,
       title: "Player Management",
@@ -46,11 +49,6 @@ export default function Home() {
       icon: Calendar,
       title: "Match Scheduling",
       description: "Organize fixtures, training sessions, and manage your team's calendar."
-    },
-    {
-      icon: Shield,
-      title: "Injury Tracking",
-      description: "Monitor player fitness, track injuries, and manage recovery programs."
     },
     {
       icon: Zap,
@@ -142,12 +140,12 @@ export default function Home() {
               #1 Football Management Platform
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+            <h1 className="pt-4 md:pt-8 text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
               Manage Your <span className="text-accent-green accent-text">Football</span> Team Like a
               Champion
             </h1>
-
-            <p className="text-xs md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+ 
+            <p className=" md:block text-xs md:text-2xl text-gray-300 mt-4 mb-8 max-w-3xl mx-auto leading-relaxed">
               Complete football management solution with player analytics, team performance tracking, 
               match analysis, and strategic planning tools used by professional clubs worldwide.
             </p>
@@ -179,42 +177,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-900/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              Everything You Need to
-              <span className="text-accent-green"> Win</span>
+      {/* Features Section - Hinge-style Swipe Deck */}
+      <section id="features" className="py-12 sm:py-16 lg:py-20 bg-pitch-black">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 text-white leading-tight">
+              Everything You Need to <span className="text-accent-green">Win</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Comprehensive tools and features designed specifically for modern football management
+            <p className="text-sm sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2">
+              Swipe through key capabilities with a modern, dynamic feel
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const colors = [
-                { bg: 'bg-green-500/10', text: 'text-green-400' },
-                { bg: 'bg-gray-700/50', text: 'text-gray-300' },
-                { bg: 'bg-gray-700/50', text: 'text-gray-300' }
-              ];
-              const colorSet = colors[index % colors.length];
-              
-              return (
-                <Card key={index} className="professional-card group hover:border-gray-600 transition-all duration-300">
-                  <CardHeader>
-                    <div className={`w-12 h-12 rounded-lg ${colorSet.bg} flex items-center justify-center mb-4 transition-all`}>
-                      <feature.icon className={`w-6 h-6 ${colorSet.text}`} />
-                    </div>
-                    <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
-                    <CardDescription className="text-base leading-relaxed text-gray-300">
-                      {feature.description}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              );
-            })}
+          <SwipeDeck items={features} />
+
+          <div className="text-center mt-10 sm:mt-14">
+            <Button 
+              size="lg" 
+              className="bg-green-600 hover:bg-green-500 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-green-500/25 transition-all duration-300"
+            >
+              Get Started Today
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
           </div>
         </div>
       </section>

@@ -108,7 +108,7 @@ export default function BottomNav() {
           <div 
             className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 scale-150 ${
               activeTab === "plus" 
-                ? 'opacity-40' 
+                ? 'opacity-35' 
                 : 'opacity-25 group-hover:opacity-35'
             } bg-green-500`}
           ></div>
@@ -132,8 +132,8 @@ export default function BottomNav() {
             }}
             className={`relative rounded-full text-black transform transition-all duration-300 ease-out active:scale-95 overflow-hidden border-2 border-green-400/40 ${
               activeTab === "plus" 
-                ? 'w-16 h-16 scale-110 -translate-y-1 shadow-[0_0_24px_rgba(34,197,94,0.5),0_0_40px_rgba(34,197,94,0.25)]' 
-                : 'w-14 h-14 hover:scale-105 hover:-translate-y-0.5 shadow-[0_0_16px_rgba(34,197,94,0.35),0_0_28px_rgba(34,197,94,0.2)] hover:shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_36px_rgba(34,197,94,0.3)]'
+                ? 'w-20 h-20 scale-110 -translate-y-1 shadow-[0_0_30px_rgba(34,197,94,0.48),0_0_60px_rgba(34,197,94,0.24)]' 
+                : 'w-18 h-18 hover:scale-105 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(34,197,94,0.36),0_0_40px_rgba(34,197,94,0.18)] hover:shadow-[0_0_25px_rgba(34,197,94,0.42),0_0_50px_rgba(34,197,94,0.24)]'
             }`}
             data-color="green"
           >
@@ -146,15 +146,15 @@ export default function BottomNav() {
             
             {/* Icon */}
             <Plus className={`relative z-10 stroke-[3] text-white transition-all duration-300 ${
-               activeTab === "plus" ? 'w-7 h-7 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]' : 'w-6 h-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]'
+               activeTab === "plus" ? 'w-8 h-8 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]' : 'w-7 h-7 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]'
              }`} />
           </Button>
           
           {/* Active state ring */}
           <div className={`absolute inset-0 rounded-full border-2 transition-all duration-500 ease-out ${
             activeTab === "plus" 
-              ? 'border-green-400/50 scale-125 opacity-90' 
-              : 'border-green-400/30 scale-115 opacity-0 group-hover:opacity-80 group-hover:scale-130'
+              ? 'border-green-400/60 scale-125 opacity-100' 
+              : 'border-green-400/40 scale-115 opacity-0 group-hover:opacity-100 group-hover:scale-130'
           }`}></div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export type SwipeItem = { title: string; description: string; icon: any };
 
 export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
+  const [paused, setPaused] = useState(false);
   // Neon variants rotate across cards
   const neonStyles = useMemo(
     () => [
@@ -47,7 +48,15 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
   };
 
   return (
-    <div className="relative isolate">
+    <div 
+      className="relative isolate"
+      onMouseDown={() => setPaused(true)}
+      onMouseUp={() => setPaused(false)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+      onTouchCancel={() => setPaused(false)}
+    >
       {/* Deck rails hint */}
       <div className="pointer-events-none absolute -left-2 top-1/2 -translate-y-1/2 h-24 w-2 rounded-r bg-white/5" />
       <div className="pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 h-24 w-2 rounded-l bg-white/5" />
@@ -57,10 +66,10 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
         {/* Track (moves to the right) */}
         <div className="group deck-track flex gap-4 will-change-transform">
           {/* Two mirrored tracks to create endless loop */}
-          <div className="flex gap-4 animate-deck-right group-hover:[animation-play-state:paused]">
+          <div className="flex gap-4 animate-deck-right" style={{ animationPlayState: paused ? 'paused' : 'running' }}>
             {loop.map((it, i) => renderCard(it, i))}
           </div>
-          <div className="flex gap-4 animate-deck-right group-hover:[animation-play-state:paused]" aria-hidden>
+          <div className="flex gap-4 animate-deck-right" style={{ animationPlayState: paused ? 'paused' : 'running' }} aria-hidden>
             {loop.map((it, i) => renderCard(it, i + loop.length))}
           </div>
         </div>

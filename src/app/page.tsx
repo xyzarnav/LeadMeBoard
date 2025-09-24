@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/sections/Navbar";
 import BottomNav from "@/components/sections/BottomNav";
 import SwipeDeck, { type SwipeItem } from "@/components/sections/SwipeDeck";
+import Footer from "@/components/sections/Footer";
 import Image from "next/image";
 import { 
   Trophy, 
@@ -264,55 +265,7 @@ export default function Home() {
       </section>
       
       {/* Footer */}
-      <footer className="bg-gray-900/80 py-12 border-t border-gray-700">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Trophy className="h-8 w-8 text-accent-green" />
-                <span className="font-bold text-white">FootballPro</span>
-              </div>
-              <p className="text-sm text-gray-300">
-                The ultimate football management platform for coaches and clubs worldwide.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4 text-white">Product</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4 text-white">Support</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4 text-white">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            © 2024 <span className="text-accent-green">FootballPro</span>. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer />
       
       {/* Mobile Bottom Navigation */}
       <BottomNav />

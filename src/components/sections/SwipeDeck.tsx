@@ -8,9 +8,9 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
   // Neon variants rotate across cards
   const neonStyles = useMemo(
     () => [
-      { ring: "ring-2 ring-pink-500/60", shadow: "shadow-[0_0_30px_rgba(236,72,153,0.28)]", border: "border-pink-500/40" },
-      { ring: "ring-2 ring-green-500/60", shadow: "shadow-[0_0_30px_rgba(34,197,94,0.28)]", border: "border-green-500/40" },
-      { ring: "ring-2 ring-purple-500/60", shadow: "shadow-[0_0_30px_rgba(168,85,247,0.28)]", border: "border-purple-500/40" },
+      { ring: "ring-1 ring-pink-500/50", shadow: "shadow-[0_0_30px_rgba(236,72,153,0.22)]", border: "border-gray-800/30" },
+      { ring: "ring-1 ring-green-500/50", shadow: "shadow-[0_0_30px_rgba(34,197,94,0.22)]", border: "border-gray-800/30" },
+      { ring: "ring-1 ring-purple-500/50", shadow: "shadow-[0_0_30px_rgba(168,85,247,0.22)]", border: "border-gray-800/30" },
     ],
     []
   );
@@ -24,12 +24,12 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
     return (
       <div
         key={`${item.title}-${i}`}
-        className={`shrink-0 rounded-3xl bg-gray-950 border ${v.border} ${v.ring} ${v.shadow} overflow-hidden h-[52svh] sm:h-[56vh]`}
+        className={`shrink-0 rounded-3xl bg-pitch-black border ${v.border} ${v.ring} ${v.shadow} overflow-hidden h-[52svh] sm:h-[60vh]`}
         style={{ width: "clamp(240px, 42vw, 360px)" }}
       >
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col py-1">
           {/* Top media (60%) */}
-          <div className="h-[60%] w-full bg-gray-800/40 border-b border-gray-700/50" />
+          <div className="h-[60%] w-full bg-gray-800/40 border-b border-gray-800/50" />
           {/* Bottom content (40%) */}
           <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between">
             <div className="flex items-center gap-3">
@@ -53,6 +53,7 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
       onMouseDown={() => setPaused(true)}
       onMouseUp={() => setPaused(false)}
       onMouseLeave={() => setPaused(false)}
+      onMouseEnter={() => setPaused(true)}
       onTouchStart={() => setPaused(true)}
       onTouchEnd={() => setPaused(false)}
       onTouchCancel={() => setPaused(false)}
@@ -62,7 +63,7 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
       <div className="pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 h-24 w-2 rounded-l bg-white/5" />
 
       {/* Viewport */}
-      <div className="overflow-x-hidden overflow-y-visible py-2">
+      <div className="overflow-hidden bg-pitch-black py-1">
         {/* Track (moves to the right) */}
         <div className="group deck-track flex gap-4 will-change-transform">
           {/* Two mirrored tracks to create endless loop */}

@@ -184,9 +184,9 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 text-white leading-tight">
               Everything You Need to <span className="text-accent-green">Win</span>
             </h2>
-            <p className="text-sm sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2">
+            {/* <p className="text-s sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2">
               Swipe through key capabilities with a modern, dynamic feel
-            </p>
+            </p> */}
           </div>
 
           <SwipeDeck items={features} />

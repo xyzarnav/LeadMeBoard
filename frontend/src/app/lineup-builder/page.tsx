@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +15,8 @@ import {
   Settings,
   Users,
   Target,
-  Zap
+  Zap,
+  Trash2
 } from "lucide-react";
 import Link from "next/link";
 import { PlayerDetailsModal } from "@/components/player-details-modal";
@@ -34,8 +35,8 @@ const formations: Formation[] = [
     positions: [
       { x: 50, y: 90, role: "GK" },
       { x: 20, y: 70, role: "LB" },
-      { x: 35, y: 70, role: "CB" },
-      { x: 65, y: 70, role: "CB" },
+      { x: 40, y: 70, role: "CB" },
+      { x: 60, y: 70, role: "CB" },
       { x: 80, y: 70, role: "RB" },
       { x: 30, y: 50, role: "CM" },
       { x: 50, y: 50, role: "CM" },
@@ -132,6 +133,7 @@ export default function LineupBuilder() {
   const [dragMode, setDragMode] = useState(false);
   const [dragEnabled, setDragEnabled] = useState(false);
   const [customFormation, setCustomFormation] = useState<{ x: number; y: number; role: string }[]>([]);
+  const [originalPlayerPositions, setOriginalPlayerPositions] = useState<{ [playerId: string]: { x: number; y: number; position: string } }>({});
 
   // Generate dynamic formations based on player count
   const generateFormation = (count: number) => {
@@ -192,6 +194,8 @@ export default function LineupBuilder() {
     ? (formations.find(f => f.id === selectedFormation) || formations[0])
     : generateFormation(playerCount);
 
+  // Removed complex global wheel handler - using individual handlers instead
+
   const addPlayer = (position: { x: number; y: number; role: string }) => {
     // Don't add player if drag is enabled
     if (dragEnabled) {
@@ -212,6 +216,17 @@ export default function LineupBuilder() {
       x: position.x,
       y: position.y
     };
+    
+    // Store original position for reset functionality
+    setOriginalPlayerPositions(prev => ({
+      ...prev,
+      [newPlayer.id]: {
+        x: position.x,
+        y: position.y,
+        position: position.role
+      }
+    }));
+    
     setPlayers([...players, newPlayer]);
     setSelectedPlayer(newPlayer.id);
     setShowBottomSheet(true);
@@ -242,6 +257,7 @@ export default function LineupBuilder() {
     setSelectedPlayer(player.id);
     setShowBottomSheet(true);
   };
+
 
   const handlePlayerCountChange = (newCount: number) => {
     setPlayerCount(newCount);
@@ -472,13 +488,13 @@ export default function LineupBuilder() {
           
           {/* Left Sidebar - Minimalist */}
           <div className="lg:col-span-3 order-2 lg:order-1">
-            <div className="space-y-2 lg:space-y-3">
+            <div className="space-y-2 lg:space-y-4 pb-2">
               {/* Player Count Selector */}
-              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1A1A1A' }}>
-                <div className="px-4 py-3 border-b border-slate-800/60">
+              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1A1A1A' }} onWheel={(e) => e.preventDefault()}>
+                <div className="px-4 py-1 border-b border-slate-800/60">
                   <h3 className="text-sm font-medium text-slate-300">Team Size</h3>
                 </div>
-                <div className="p-6">
+                <div className="p-10">
                   <div className="space-y-6">
                     {/* Current Value Display with Glow Effect */}
                     <div className="text-center relative">
@@ -492,7 +508,7 @@ export default function LineupBuilder() {
                     </div>
                     
                     {/* Advanced Slider Container */}
-                    <div className="relative">
+                    <div className="relative" onWheel={(e) => e.preventDefault()} style={{ touchAction: 'none' }}>
                       {/* Slider Track with Gradient */}
                       <div className="relative h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-full shadow-inner">
                         <div 
@@ -515,9 +531,47 @@ export default function LineupBuilder() {
                         max="11"
                         value={playerCount}
                         onChange={(e) => handlePlayerCountChange(parseInt(e.target.value))}
+                        onWheel={(e) => e.preventDefault()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                            e.preventDefault();
+                          }
+                        }}
                         className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer slider-advanced"
                         style={{ zIndex: 10 }}
+                        tabIndex={-1}
                       />
+                      
+                      {/* Enhanced Plus and Minus Buttons - Below Slider */}
+                      <div className="absolute left-2 top-10 transform -translate-y-1/2">
+                        <button
+                          onClick={() => handlePlayerCountChange(Math.max(3, playerCount - 1))}
+                          disabled={playerCount <= 3}
+                          className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                          aria-label="Decrease player count"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                          <span className="relative z-10">−</span>
+                          {playerCount <= 3 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                          )}
+                        </button>
+                      </div>
+                      
+                      <div className="absolute right-2 top-10 transform -translate-y-1/2">
+                        <button
+                          onClick={() => handlePlayerCountChange(Math.min(11, playerCount + 1))}
+                          disabled={playerCount >= 11}
+                          className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                          aria-label="Increase player count"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                          <span className="relative z-10">+</span>
+                          {playerCount >= 11 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                          )}
+                        </button>
+                      </div>
                       
                     </div>
                   </div>
@@ -557,19 +611,44 @@ export default function LineupBuilder() {
                     </Button>
                   </div>
                   
-                  {/* Drag Toggle - Only show when free formation is selected */}
+                  {/* Drag Toggle and Reset - Only show when free formation is selected */}
                   {isFreeFormation && (
                     <div className="mb-3">
-                      <Button
-                        onClick={() => setDragEnabled(!dragEnabled)}
-                        className={`w-full h-auto py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                          dragEnabled 
-                            ? 'bg-blue-600/20 text-blue-400 ring-1 ring-blue-500/30' 
-                            : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
-                        }`}
-                      >
-                        {dragEnabled ? '✓ Drag Mode On' : 'Drag Mode Off'}
-                      </Button>
+                      <div className="flex gap-1">
+                        {/* Drag Toggle - Left Half */}
+                        <Button
+                          onClick={() => setDragEnabled(!dragEnabled)}
+                          className={`flex-1 h-auto py-3 px-2 rounded-l-lg text-xs font-medium transition-all ${
+                            dragEnabled 
+                              ? 'bg-green-600/20 p-2 text-green-400 ring-1 ring-green-500/30 ' 
+                              : 'bg-blue-600/20 p-2 text-blue-400 ring-1 ring-blue-500/30 '
+                          }`}
+                        >
+                          Drag: {dragEnabled ? 'On' : 'Off'}
+                        </Button>
+                        
+                        {/* Reset Button - Right Half */}
+                        <Button
+                          onClick={() => {
+                            console.log('Reset clicked - Clearing all players');
+                            
+                            // Clear all players
+                            setPlayers([]);
+                            setSelectedPlayer(null);
+                            setShowBottomSheet(false);
+                            
+                            // Reset custom formation to default
+                            const defaultFormation = generateFormation(playerCount);
+                            setCustomFormation(defaultFormation.positions);
+                            
+                            // Disable drag mode
+                            setDragEnabled(false);
+                          }}
+                          className="flex-1 h-auto py-2 px-2 p-2 rounded-r-lg text-xs font-medium bg-orange-600/20 text-orange-400 hover:bg-orange-600/30 hover:text-orange-300 ring-1 ring-orange-500/30 transition-all"
+                        >
+                          Reset
+                        </Button>
+                      </div>
                     </div>
                   )}
                   
@@ -665,6 +744,7 @@ export default function LineupBuilder() {
                                   draggedPlayer === player.id ? 'scale-110 shadow-lg' : ''
                                 } ${dragEnabled ? 'cursor-move' : 'cursor-pointer'}`}
                                 style={{ userSelect: 'none', pointerEvents: 'auto' }}
+                                tabIndex={0}
                               >
                                 {player.number}
                               </button>
@@ -687,6 +767,7 @@ export default function LineupBuilder() {
                                 } ${draggedPlayer === `position-${index}` ? 'scale-110 shadow-lg' : ''}`}
                                 aria-label={`Add player at ${position.role}`}
                                 style={{ userSelect: 'none', pointerEvents: 'auto' }}
+                                tabIndex={0}
                               >
                                 <Plus className="w-5 h-5 text-black/80 stroke-2" />
                               </button>
@@ -708,8 +789,13 @@ export default function LineupBuilder() {
                             {player ? (
                               <div className="relative">
                                 <button
+                                  onMouseDown={(e) => handleMouseDown(player.id, e)}
                                   onClick={dragEnabled ? undefined : () => handlePlayerClick(player)}
-                                  className="w-10 h-10 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-transform hover:scale-105"
+                                  className={`w-10 h-10 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-transform hover:scale-105 ${
+                                    draggedPlayer === player.id ? 'scale-110 shadow-lg' : ''
+                                  } ${dragEnabled ? 'cursor-move' : 'cursor-pointer'}`}
+                                  style={{ userSelect: 'none', pointerEvents: 'auto' }}
+                                  tabIndex={0}
                                 >
                                   {player.number}
                                 </button>
@@ -721,8 +807,9 @@ export default function LineupBuilder() {
                               players.length < playerCount && (
                                 <button
                                   onClick={() => addPlayer(position)}
-                                  className="w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center"
+                                  className={`w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center`}
                                   aria-label={`Add player at ${position.role}`}
+                                  tabIndex={0}
                                 >
                                   <Plus className="w-5 h-5 text-black/80 stroke-2" />
                                 </button>
@@ -746,9 +833,26 @@ export default function LineupBuilder() {
                     <h3 className="text-sm font-medium text-slate-300">Squad</h3>
                     <p className="text-xs text-slate-500 mt-0.5">Team Players</p>
                   </div>
-                  <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
-                    {players.length}/{playerCount}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+                      {players.length}/{playerCount}
+                    </Badge>
+                    {players.length > 0 && (
+                      <Button
+                        onClick={() => {
+                          setPlayers([]);
+                          setSelectedPlayer(null);
+                          setShowBottomSheet(false);
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="w-8 h-8 p-0 text-red-400 hover:text-red-300 hover:bg-red-600/20 rounded-lg transition-all"
+                        aria-label="Clear all players"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
               

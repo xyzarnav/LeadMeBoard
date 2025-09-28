@@ -4,21 +4,26 @@ import { Button } from "@/components/ui/button";
 import { 
   Home, 
   Users, 
+  Compass,
+  Layers,
+  Box,
   BarChart3, 
   Calendar,
   Settings,
   Trophy,
+  Grid3X3,
   Plus
 } from "lucide-react";
 import { useState, useRef } from "react";
 
 export default function BottomNav() {
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState("team");
   const [ripple, setRipple] = useState(false);
 
   const navItems = [
-    { id: "home", icon: Home, label: "Home", href: "#" },
+
     { id: "team", icon: Users, label: "Team", href: "#features" },
+    { id: "room", icon: Box, label: "Room", href: "#" },
     { id: "plus", icon: Plus, label: "Add", href: "#" }, // FAB as selectable item
     { id: "matches", icon: Calendar, label: "Matches", href: "#pricing" },
     { id: "profile", icon: Settings, label: "Profile", href: "#" },
@@ -106,7 +111,7 @@ export default function BottomNav() {
         <div className="relative group">
           {/* FAB Neon Glow */}
           <div 
-            className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 scale-150 ${
+            className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 scale-100 ${
               activeTab === "plus" 
                 ? 'opacity-35' 
                 : 'opacity-25 group-hover:opacity-35'
@@ -115,7 +120,7 @@ export default function BottomNav() {
           
           {/* FAB Inner Glow */}
           <div 
-            className={`absolute inset-0 rounded-full blur-md transition-all duration-300 scale-125 ${
+            className={`absolute inset-0 rounded-full blur-md transition-all duration-300 scale-105 ${
               activeTab === "plus" 
                 ? 'opacity-50' 
                 : 'opacity-35 group-hover:opacity-45'

@@ -189,9 +189,11 @@ export default function Home() {
               Swipe through key capabilities with a modern, dynamic feel
             </p> */}
           </div>
+        </div>
 
-          <SwipeDeck items={features} />
+        <SwipeDeck items={features} />
 
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mt-10 sm:mt-14">
             <Button 
               size="lg" 

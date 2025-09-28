@@ -8,9 +8,9 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
   // Neon variants rotate across cards
   const neonStyles = useMemo(
     () => [
-      { ring: "ring-1 ring-pink-500/50", shadow: "shadow-[0_0_30px_rgba(236,72,153,0.22)]", border: "border-gray-800/30" },
+      { ring: "ring-1 ring-green-500/50", shadow: "shadow-[0_0_30px_rgba(236,72,153,0.22)]", border: "border-gray-800/30" },
       { ring: "ring-1 ring-green-500/50", shadow: "shadow-[0_0_30px_rgba(34,197,94,0.22)]", border: "border-gray-800/30" },
-      { ring: "ring-1 ring-purple-500/50", shadow: "shadow-[0_0_30px_rgba(168,85,247,0.22)]", border: "border-gray-800/30" },
+      { ring: "ring-1 ring-green-500/50", shadow: "shadow-[0_0_30px_rgba(168,85,247,0.22)]", border: "border-gray-800/30" },
     ],
     []
   );

@@ -86,7 +86,7 @@ export default function BottomNav() {
                 </div>
                 
                 {/* Label */}
-                <span className={`text-xs font-medium mt-0.5 transition-all duration-300 relative z-10 ${
+                <span className={`text-xs font-medium mt-0.5 mb-2 pb-2 transition-all duration-300 relative z-10 ${
                   isActive 
                     ? 'text-accent-green font-semibold' 
                     : 'text-gray-500 group-hover:text-gray-300'

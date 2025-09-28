@@ -201,7 +201,7 @@ export default function LineupBuilder() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           
           {/* Left Sidebar - Minimalist */}
           <div className="lg:col-span-3">
@@ -256,7 +256,7 @@ export default function LineupBuilder() {
             </div>
           </div>
           {/* Main Pitch Area */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             <div className="rounded-md overflow-hidden mx-auto" style={{ maxWidth: '400px' }}>
               {/* compact pitch: minimal padding, dark background, constrained width */}
               <div
@@ -311,46 +311,65 @@ export default function LineupBuilder() {
           </div>
 
           {/* Right Sidebar - Players List */}
-          <div className="lg:col-span-3">
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-semibold text-slate-300">Players</h3>
-                <Badge variant="secondary" className="bg-emerald-600 text-white">
-                  {players.length}/11
-                </Badge>
+          <div className="lg:col-span-4">
+            <div className="bg-slate-900/30 backdrop-blur-sm rounded-2xl" style={{ minWidth: '280px' }}>
+              <div className="px-4 py-3 border-b border-slate-800/60">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-medium text-slate-300">Squad</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">Team Players</p>
+                  </div>
+                  <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+                    {players.length}/11
+                  </Badge>
+                </div>
               </div>
               
               {players.length > 0 ? (
-                <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {players.map((player) => (
-                    <div
-                      key={player.id}
-                      onClick={() => handlePlayerClick(player)}
-                      className={`p-3 rounded-xl cursor-pointer transition-all ${
-                        selectedPlayer === player.id 
-                          ? 'bg-emerald-600/20 border border-emerald-500/30' 
-                          : 'bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                          {player.number}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-white font-medium truncate">
-                            {player.name || `Player ${player.number}`}
+                <div className="p-1.5">
+                  <div className="space-y-0.5">
+                    {players.map((player) => (
+                      <div
+                        key={player.id}
+                        onClick={() => handlePlayerClick(player)}
+                        className={`group relative px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${
+                          selectedPlayer === player.id 
+                            ? 'bg-emerald-600/10 border border-emerald-500/20' 
+                            : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors ${
+                            selectedPlayer === player.id
+                              ? 'bg-emerald-600/20 text-emerald-400'
+                              : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
+                          }`}>
+                            {player.number}
                           </div>
-                          <div className="text-xs text-slate-400">{player.position}</div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-medium text-slate-200 truncate">
+                              {player.name || `Player ${player.number}`}
+                            </div>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className="text-[10px] font-medium text-slate-400">{player.position}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : (
-                <div className="text-center py-8">
-                  <Users className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-                  <p className="text-slate-500 text-sm">No players added yet</p>
-                  <p className="text-slate-600 text-xs mt-1">Tap positions on the pitch to add players</p>
+                <div className="px-4 py-6">
+                  <div className="text-center">
+                    <div className="w-10 h-10 rounded-xl bg-slate-800/50 flex items-center justify-center mx-auto mb-2">
+                      <Users className="w-5 h-5 text-slate-400" />
+                    </div>
+                    <h3 className="text-xs font-medium text-slate-300 mb-1">No Players Added</h3>
+                    <p className="text-[10px] text-slate-500 max-w-[160px] mx-auto">
+                      Tap on the positions on the pitch to start building your squad
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
@@ -399,6 +418,8 @@ export default function LineupBuilder() {
                       onChange={(e) => updatePlayer(player.id, { number: parseInt(e.target.value) || 1 })}
                       min="1"
                       max="99"
+                      placeholder="Enter jersey number"
+                      title="Jersey Number"
                       className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     />
                   </div>
@@ -433,4 +454,4 @@ export default function LineupBuilder() {
     </div>
   );
 }
-  
+

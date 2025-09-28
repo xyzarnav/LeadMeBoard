@@ -422,30 +422,30 @@ export default function LineupBuilder() {
     <div className="min-h-screen bg-black">
       {/* Minimalist Header */}
       <div className="sticky top-0 z-50 bg-gray-900/100 backdrop-blur-xl border-b border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link href="/">
-                <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl">
-                  <ArrowLeft className="w-5 h-5" />
+                <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl">
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-xl font-bold text-white">Lineup Builder</h1>
-                <p className="text-sm text-slate-500">{players.length}/{playerCount} players</p>
+                <h1 className="text-lg sm:text-xl font-bold text-white">Lineup Builder</h1>
+                <p className="text-xs sm:text-sm text-slate-500">{players.length}/{playerCount} players</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setShowTeamDetails(!showTeamDetails)}
-                className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl"
+                className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl"
               >
-                <Settings className="w-5 h-5" />
+                <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl">
-                <Share2 className="w-5 h-5" />
+              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl">
+                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </div>
           </div>
@@ -483,96 +483,191 @@ export default function LineupBuilder() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-3 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 py-4 sm:py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
           
           {/* Left Sidebar - Minimalist */}
-          <div className="lg:col-span-3 order-2 lg:order-1">
+          <div className="lg:col-span-3 order-1 lg:order-1">
             <div className="space-y-2 lg:space-y-4 pb-2">
               {/* Player Count Selector */}
               <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1A1A1A' }} onWheel={(e) => e.preventDefault()}>
-                <div className="px-4 py-1 border-b border-slate-800/60">
-                  <h3 className="text-sm font-medium text-slate-300">Team Size</h3>
+                {/* Desktop Header */}
+                <div className="hidden sm:block px-3 sm:px-4 py-1 border-b border-slate-800/60">
+                  <h3 className="text-xs sm:text-sm font-medium text-slate-300">Team Size</h3>
                 </div>
-                <div className="p-10">
-                  <div className="space-y-6">
-                    {/* Current Value Display with Glow Effect */}
-                    <div className="text-center relative">
-                      <div className="relative inline-block">
-                        <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full scale-150"></div>
-                        <div className="relative text-4xl font-black text-emerald-400 tracking-tight">
-                          {playerCount}
-                        </div>
-                      </div>
-                      <div className="text-sm text-slate-400 font-medium mt-1">players on field</div>
-                    </div>
-                    
-                    {/* Advanced Slider Container */}
-                    <div className="relative" onWheel={(e) => e.preventDefault()} style={{ touchAction: 'none' }}>
-                      {/* Slider Track with Gradient */}
-                      <div className="relative h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-full shadow-inner">
-                        <div 
-                          className="absolute top-0 left-0 h-3 bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500 rounded-full shadow-lg"
-                          style={{ width: `${((playerCount - 3) / 8) * 100}%` }}
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/50 to-emerald-300/50 rounded-full animate-pulse"></div>
-                          
-                          {/* Interactive Wheel Indicator */}
-                          <div className="absolute -right-2 -top-1 w-6 h-6 bg-emerald-400 border-2 border-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-200">
-                            <Plus className="w-3 h-3 text-white" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Custom Slider Input */}
-                      <input
-                        type="range"
-                        min="3"
-                        max="11"
-                        value={playerCount}
-                        onChange={(e) => handlePlayerCountChange(parseInt(e.target.value))}
-                        onWheel={(e) => e.preventDefault()}
-                        onKeyDown={(e) => {
-                          if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                            e.preventDefault();
-                          }
-                        }}
-                        className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer slider-advanced"
-                        style={{ zIndex: 10 }}
-                        tabIndex={-1}
-                      />
-                      
-                      {/* Enhanced Plus and Minus Buttons - Below Slider */}
-                      <div className="absolute left-2 top-10 transform -translate-y-1/2">
+                <div className="p-0 sm:p-2 lg:pb-8 xl:pb-10">
+                  <div className="space-y-1 sm:space-y-2">
+                    {/* Mobile: Compact Layout - Everything in one row */}
+                    <div className="block sm:hidden">
+                      <div className="flex items-center gap-2">
+                        {/* Minus Button */}
                         <button
                           onClick={() => handlePlayerCountChange(Math.max(3, playerCount - 1))}
                           disabled={playerCount <= 3}
-                          className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                          className="group relative w-8 h-8 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-lg flex items-center justify-center text-white text-sm font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
                           aria-label="Decrease player count"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
                           <span className="relative z-10">−</span>
                           {playerCount <= 3 && (
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                            <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-white/20"></div>
                           )}
                         </button>
-                      </div>
-                      
-                      <div className="absolute right-2 top-10 transform -translate-y-1/2">
+                        
+                        {/* Slider */}
+                        <div className="flex-1 relative" onWheel={(e) => e.preventDefault()} style={{ touchAction: 'none' }}>
+                          <div className="relative h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-full shadow-inner">
+                            <div 
+                              className="absolute top-0 left-0 h-3 bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500 rounded-full shadow-lg"
+                              style={{ width: `${((playerCount - 3) / 8) * 100}%` }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/50 to-emerald-300/50 rounded-full animate-pulse"></div>
+                            </div>
+                          </div>
+                          <input
+                            type="range"
+                            min="3"
+                            max="11"
+                            value={playerCount}
+                            onChange={(e) => handlePlayerCountChange(parseInt(e.target.value))}
+                            onWheel={(e) => e.preventDefault()}
+                            onKeyDown={(e) => {
+                              if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                                e.preventDefault();
+                              }
+                            }}
+                            className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer slider-advanced"
+                            style={{ 
+                              zIndex: 10, 
+                              margin: 0, 
+                              padding: 0,
+                              border: 'none',
+                              outline: 'none',
+                              background: 'transparent',
+                              appearance: 'none',
+                              WebkitAppearance: 'none',
+                              MozAppearance: 'none'
+                            }}
+                            tabIndex={-1}
+                          />
+                        </div>
+                        
+                        {/* Plus Button */}
                         <button
                           onClick={() => handlePlayerCountChange(Math.min(11, playerCount + 1))}
                           disabled={playerCount >= 11}
-                          className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                          className="group relative w-8 h-8 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-lg flex items-center justify-center text-white text-sm font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
                           aria-label="Increase player count"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
                           <span className="relative z-10">+</span>
                           {playerCount >= 11 && (
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                            <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-white/20"></div>
                           )}
                         </button>
                       </div>
                       
+                      {/* Mobile: Player count and text in one line */}
+                      <div className="flex items-center justify-center gap-1 mt-0.5">
+                        <div className="relative inline-block">
+                          <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full scale-150"></div>
+                          <div className="relative text-xl font-black text-emerald-400 tracking-tight">
+                            {playerCount}
+                          </div>
+                        </div>
+                        <div className="text-xs text-slate-400 font-medium">players</div>
+                      </div>
+                    </div>
+                    
+                    {/* Desktop: Original Layout */}
+                    <div className="hidden sm:block">
+                      {/* Current Value Display with Glow Effect - Desktop */}
+                      <div className="text-center relative">
+                        <div className="relative inline-block">
+                          <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full scale-150"></div>
+                          <div className="relative text-4xl font-black text-emerald-400 tracking-tight">
+                            {playerCount}
+                          </div>
+                        </div>
+                        <div className="text-sm text-slate-400 font-medium mt-1">players on field</div>
+                      </div>
+                      
+                      {/* Advanced Slider Container - Desktop */}
+                      <div className="relative" onWheel={(e) => e.preventDefault()} style={{ touchAction: 'none' }}>
+                        {/* Slider Track with Gradient */}
+                        <div className="relative h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-full shadow-inner">
+                          <div 
+                            className="absolute top-0 left-0 h-3 bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500 rounded-full shadow-lg"
+                            style={{ width: `${((playerCount - 3) / 8) * 100}%` }}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/50 to-emerald-300/50 rounded-full animate-pulse"></div>
+                            
+                            {/* Interactive Wheel Indicator */}
+                            <div className="absolute -right-2 -top-1 w-6 h-6 bg-emerald-400 border-2 border-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-200">
+                              <Plus className="w-3 h-3 text-white" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Custom Slider Input */}
+                        <input
+                          type="range"
+                          min="3"
+                          max="11"
+                          value={playerCount}
+                          onChange={(e) => handlePlayerCountChange(parseInt(e.target.value))}
+                          onWheel={(e) => e.preventDefault()}
+                          onKeyDown={(e) => {
+                            if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                              e.preventDefault();
+                            }
+                          }}
+                          className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer slider-advanced"
+                          style={{ 
+                            zIndex: 10, 
+                            margin: 0, 
+                            padding: 0,
+                            border: 'none',
+                            outline: 'none',
+                            background: 'transparent',
+                            appearance: 'none',
+                            WebkitAppearance: 'none',
+                            MozAppearance: 'none'
+                          }}
+                          tabIndex={-1}
+                        />
+                        
+                        {/* Enhanced Plus and Minus Buttons - Desktop */}
+                        <div className="absolute left-2 top-10 transform -translate-y-1/2">
+                          <button
+                            onClick={() => handlePlayerCountChange(Math.max(3, playerCount - 1))}
+                            disabled={playerCount <= 3}
+                            className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                            aria-label="Decrease player count"
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                            <span className="relative z-10">−</span>
+                            {playerCount <= 3 && (
+                              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                            )}
+                          </button>
+                        </div>
+                        
+                        <div className="absolute right-2 top-10 transform -translate-y-1/2">
+                          <button
+                            onClick={() => handlePlayerCountChange(Math.min(11, playerCount + 1))}
+                            disabled={playerCount >= 11}
+                            className="group relative w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 disabled:from-slate-800 disabled:to-slate-900 disabled:opacity-40 rounded-xl flex items-center justify-center text-white text-lg font-bold transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100 shadow-lg hover:shadow-xl disabled:shadow-none border border-slate-600/50 hover:border-slate-500 disabled:border-slate-700/30"
+                            aria-label="Increase player count"
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"></div>
+                            <span className="relative z-10">+</span>
+                            {playerCount >= 11 && (
+                              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white/20"></div>
+                            )}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -580,131 +675,222 @@ export default function LineupBuilder() {
 
               {/* Formation Selector */}
               <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
-                <div className="px-3 py-2 border-b border-slate-800/60">
-                  <h3 className="text-sm font-medium text-slate-400">Formation</h3>
+                {/* Desktop Header */}
+                <div className="hidden sm:block px-3 py-2 border-b border-slate-800/60">
+                  <h3 className="text-xs sm:text-sm font-medium text-slate-400">Formation</h3>
                 </div>
-                <div className="p-3">
-                  {/* Free Formation Toggle */}
-                  <div className="mb-3">
-                    <Button
-                      onClick={() => {
-                        const newFreeFormation = !isFreeFormation;
-                        setIsFreeFormation(newFreeFormation);
-                        
-                        if (newFreeFormation) {
-                          setSelectedFormation("free");
-                          // Initialize with default formation positions
-                          const defaultFormation = generateFormation(playerCount);
-                          setCustomFormation(defaultFormation.positions);
-                        } else {
-                          // Reset drag when switching away from free formation
-                          setDragEnabled(false);
-                        }
-                      }}
-                      className={`w-full h-auto py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                        isFreeFormation 
-                          ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
-                          : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
-                      }`}
-                    >
-                      {isFreeFormation ? '✓ Free Formation' : 'Free Formation'}
-                    </Button>
-                  </div>
-                  
-                  {/* Drag Toggle and Reset - Only show when free formation is selected */}
-                  {isFreeFormation && (
-                    <div className="mb-3">
-                      <div className="flex gap-1">
-                        {/* Drag Toggle - Left Half */}
-                        <Button
-                          onClick={() => setDragEnabled(!dragEnabled)}
-                          className={`flex-1 h-auto py-3 px-2 rounded-l-lg text-xs font-medium transition-all ${
-                            dragEnabled 
-                              ? 'bg-green-600/20 p-2 text-green-400 ring-1 ring-green-500/30 ' 
-                              : 'bg-blue-600/20 p-2 text-blue-400 ring-1 ring-blue-500/30 '
-                          }`}
-                        >
-                          Drag: {dragEnabled ? 'On' : 'Off'}
-                        </Button>
-                        
-                        {/* Reset Button - Right Half */}
-                        <Button
-                          onClick={() => {
-                            console.log('Reset clicked - Clearing all players');
-                            
-                            // Clear all players
-                            setPlayers([]);
-                            setSelectedPlayer(null);
-                            setShowBottomSheet(false);
-                            
-                            // Reset custom formation to default
+                <div className="p-1 sm:p-2 lg:p-3">
+                  {/* Mobile: Compact One-Row Layout */}
+                  <div className="block sm:hidden">
+                    <div className="flex items-center gap-1">
+                      {/* Free Formation Button - Mobile */}
+                      <Button
+                        onClick={() => {
+                          const newFreeFormation = !isFreeFormation;
+                          setIsFreeFormation(newFreeFormation);
+                          
+                          if (newFreeFormation) {
+                            setSelectedFormation("free");
+                            // Initialize with default formation positions
                             const defaultFormation = generateFormation(playerCount);
                             setCustomFormation(defaultFormation.positions);
-                            
-                            // Disable drag mode
+                          } else {
+                            // Reset drag when switching away from free formation
                             setDragEnabled(false);
-                          }}
-                          className="flex-1 h-auto py-2 px-2 p-2 rounded-r-lg text-xs font-medium bg-orange-600/20 text-orange-400 hover:bg-orange-600/30 hover:text-orange-300 ring-1 ring-orange-500/30 transition-all"
+                          }
+                        }}
+                        className={`flex-1 h-auto py-1.5 px-2 rounded-lg text-xs font-medium transition-all ${
+                          isFreeFormation 
+                            ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
+                            : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                        }`}
+                      >
+                        {isFreeFormation ? '✓ Free' : 'Free'}
+                      </Button>
+                      
+                      {/* Formation Dropdown - Mobile */}
+                      <div className="flex-1 relative">
+                        <select
+                          value={selectedFormation}
+                          onChange={(e) => setSelectedFormation(e.target.value)}
+                          disabled={isFreeFormation}
+                          className="w-full h-8 px-2 py-1 bg-slate-800/40 border border-slate-700/50 rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed appearance-none"
                         >
-                          Reset
-                        </Button>
+                          {formations.map(formation => (
+                            <option key={formation.id} value={formation.id}>
+                              {formation.name}
+                            </option>
+                          ))}
+                        </select>
+                        {/* Custom dropdown arrow */}
+                        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                          <ChevronDown className="w-3 h-3 text-slate-400" />
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  
-                  {/* Predefined Formations - Only show for 11 players and when not in free mode */}
-                  {playerCount === 11 && !isFreeFormation && (
-                    <div className="grid grid-cols-3 lg:grid-cols-2 gap-2">
-                      {formations.map(formation => (
+                      
+                      {/* Drag Toggle - Only show when Free is selected */}
+                      {isFreeFormation && (
                         <Button
-                          key={formation.id}
-                          onClick={() => setSelectedFormation(formation.id)}
-                          className={`h-auto py-2 px-2 rounded-lg text-xs font-medium transition-all ${
-                            selectedFormation === formation.id 
-                              ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
-                              : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                          onClick={() => setDragEnabled(!dragEnabled)}
+                          className={`h-8 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
+                            dragEnabled 
+                              ? 'bg-green-600/20 text-green-400 ring-1 ring-green-500/30' 
+                              : 'bg-blue-600/20 text-blue-400 ring-1 ring-blue-500/30'
                           }`}
                         >
-                          {formation.name}
+                          {dragEnabled ? 'Drag On' : 'Drag Off'}
                         </Button>
-                      ))}
+                      )}
                     </div>
-                  )}
+                  </div>
+                  
+                  {/* Desktop: Original Layout */}
+                  <div className="hidden sm:block">
+                    {/* Free Formation Toggle - Desktop */}
+                    <div className="mb-2 sm:mb-3">
+                      <Button
+                        onClick={() => {
+                          const newFreeFormation = !isFreeFormation;
+                          setIsFreeFormation(newFreeFormation);
+                          
+                          if (newFreeFormation) {
+                            setSelectedFormation("free");
+                            // Initialize with default formation positions
+                            const defaultFormation = generateFormation(playerCount);
+                            setCustomFormation(defaultFormation.positions);
+                          } else {
+                            // Reset drag when switching away from free formation
+                            setDragEnabled(false);
+                          }
+                        }}
+                        className={`w-full h-auto py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                          isFreeFormation 
+                            ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
+                            : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                        }`}
+                      >
+                        {isFreeFormation ? '✓ Free Formation' : 'Free Formation'}
+                      </Button>
+                    </div>
+                  
+                    {/* Drag Toggle and Reset - Desktop */}
+                    {isFreeFormation && (
+                      <div className="mb-3">
+                        <div className="flex gap-1">
+                          {/* Drag Toggle - Left Half */}
+                          <Button
+                            onClick={() => setDragEnabled(!dragEnabled)}
+                            className={`flex-1 h-auto py-3 px-2 rounded-l-lg text-xs font-medium transition-all ${
+                              dragEnabled 
+                                ? 'bg-green-600/20 text-green-400 ring-1 ring-green-500/30' 
+                                : 'bg-blue-600/20 text-blue-400 ring-1 ring-blue-500/30'
+                            }`}
+                          >
+                            Drag: {dragEnabled ? 'On' : 'Off'}
+                          </Button>
+                          
+                          {/* Reset Button - Right Half */}
+                          <Button
+                            onClick={() => {
+                              console.log('Reset clicked - Clearing all players');
+                              
+                              // Clear all players
+                              setPlayers([]);
+                              setSelectedPlayer(null);
+                              setShowBottomSheet(false);
+                              
+                              // Reset custom formation to default
+                              const defaultFormation = generateFormation(playerCount);
+                              setCustomFormation(defaultFormation.positions);
+                              
+                              // Disable drag mode
+                              setDragEnabled(false);
+                            }}
+                            className="flex-1 h-auto py-3 px-2 rounded-r-lg text-xs font-medium bg-orange-600/20 text-orange-400 hover:bg-orange-600/30 hover:text-orange-300 ring-1 ring-orange-500/30 transition-all"
+                          >
+                            Reset
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Predefined Formations - Desktop */}
+                    {playerCount === 11 && !isFreeFormation && (
+                      <div className="grid grid-cols-3 lg:grid-cols-2 gap-2">
+                        {formations.map(formation => (
+                          <Button
+                            key={formation.id}
+                            onClick={() => setSelectedFormation(formation.id)}
+                            className={`h-auto py-2 px-2 rounded-lg text-xs font-medium transition-all ${
+                              selectedFormation === formation.id 
+                                ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
+                                : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                            }`}
+                          >
+                            {formation.name}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Quick Actions */}
+              {/* Quick Actions - Mobile Optimized */}
               <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
-                <div className="px-3 py-2 border-b border-slate-800/60">
-                  <h3 className="text-sm font-medium text-slate-400">Actions</h3>
+                {/* Desktop Header */}
+                <div className="hidden sm:block px-3 py-2 border-b border-slate-800/60">
+                  <h3 className="text-xs sm:text-sm font-medium text-slate-400">Actions</h3>
                 </div>
-                <div className="p-2">
-                  <div className="space-y-1">
-                    <Button 
-                      className="w-full h-auto py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      <Save className="w-4 h-4 mr-2 opacity-80" />
-                      Save Lineup
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full h-auto py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      <Share2 className="w-4 h-4 mr-2 opacity-80" />
-                      Share Lineup
-                    </Button>
+                <div className="p-1 sm:p-2">
+                  {/* Mobile: One Row Layout */}
+                  <div className="block sm:hidden">
+                    <div className="flex gap-1">
+                      <Button 
+                        className="flex-1 h-auto py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        <Save className="w-3 h-3 mr-1 opacity-80" />
+                        Save
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 h-auto py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        <Share2 className="w-3 h-3 mr-1 opacity-80" />
+                        Share
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Desktop: Original Vertical Layout */}
+                  <div className="hidden sm:block">
+                    <div className="space-y-1">
+                      <Button 
+                        className="w-full h-auto py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <Save className="w-4 h-4 mr-2 opacity-80" />
+                        Save Lineup
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full h-auto py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <Share2 className="w-4 h-4 mr-2 opacity-80" />
+                        Share Lineup
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           {/* Main Pitch Area */}
-          <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
+          <div className="lg:col-span-5 flex justify-center order-2 lg:order-2">
             <div className="rounded-lg overflow-hidden w-full" style={{ maxWidth: '400px' }}>
               {/* compact pitch: minimal padding, dark background, constrained width */}
               <div
                 className={`relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-lg shadow-lg overflow-hidden w-full pitch-container ${draggedPlayer ? 'dragging' : ''}`}
-                style={{ aspectRatio: '2/3' }}
+                style={{ aspectRatio: '2/3', minHeight: '300px' }}
               >
             
                
@@ -825,12 +1011,12 @@ export default function LineupBuilder() {
           </div>
 
           {/* Right Sidebar - Players List */}
-          <div className="lg:col-span-4 order-3">
-            <div className="rounded-2xl" style={{ backgroundColor: '#1A1A1A', minWidth: '300px' }}>
+          <div className="lg:col-span-4 order-3 lg:order-3">
+            <div className="rounded-2xl" style={{ backgroundColor: '#1A1A1A', minWidth: '280px' }}>
               <div className="px-3 lg:px-4 py-2 lg:py-3 border-b border-slate-800/60">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-slate-300">Squad</h3>
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-300">Squad</h3>
                     <p className="text-xs text-slate-500 mt-0.5">Team Players</p>
                   </div>
                   <div className="flex items-center gap-2">

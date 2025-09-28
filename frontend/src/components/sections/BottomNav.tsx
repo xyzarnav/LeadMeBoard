@@ -32,8 +32,8 @@ export default function BottomNav() {
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0, bottom: 0 }}>
-        <div className="relative h-16 overflow-hidden" style={{ marginBottom: 0, paddingBottom: 0 }}>
+      <nav className="fixed bottom-2 left-0 right-0 z-40 md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0, bottom: 0 }}>
+        <div className="relative h-20 overflow-hidden" style={{ marginBottom: 0, paddingBottom: 0 }}>
           {/* Main navbar background */}
           <div className="absolute inset-0 bg-black backdrop-blur-xl border-t border-white/20">
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -86,7 +86,7 @@ export default function BottomNav() {
                 </div>
                 
                 {/* Label */}
-                <span className={`text-xs font-medium mt-0.5 mb-2 pb-2 transition-all duration-300 relative z-10 ${
+                <span className={`text-xs font-medium mt-0.5 mb-0 pb-0 transition-all duration-300 relative z-10 ${
                   isActive 
                     ? 'text-accent-green font-semibold' 
                     : 'text-gray-500 group-hover:text-gray-300'

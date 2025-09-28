@@ -18,15 +18,8 @@ import {
   Zap
 } from "lucide-react";
 import Link from "next/link";
-
-interface Player {
-  id: string;
-  name: string;
-  position: string;
-  number: number;
-  x: number;
-  y: number;
-}
+import { PlayerDetailsModal } from "@/components/player-details-modal";
+import { Player } from "@/types/player";
 
 interface Formation {
   id: string;
@@ -200,19 +193,19 @@ export default function LineupBuilder() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
+      <div className="max-w-7xl mx-auto px-3 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           
           {/* Left Sidebar - Minimalist */}
-          <div className="lg:col-span-2">
-            <div className="space-y-3">
+          <div className="lg:col-span-3 order-2 lg:order-1">
+            <div className="space-y-2 lg:space-y-3">
               {/* Formation Selector */}
               <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
                 <div className="px-3 py-2 border-b border-slate-800/60">
                   <h3 className="text-sm font-medium text-slate-400">Formation</h3>
                 </div>
                 <div className="p-2">
-                  <div className="grid grid-cols-1 gap-1">
+                  <div className="grid grid-cols-3 lg:grid-cols-1 gap-1">
                     {formations.map(formation => (
                       <Button
                         key={formation.id}
@@ -256,12 +249,12 @@ export default function LineupBuilder() {
             </div>
           </div>
           {/* Main Pitch Area */}
-          <div className="lg:col-span-6">
-            <div className="rounded-lg overflow-hidden mx-auto" style={{ maxWidth: '450px' }}>
+          <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
+            <div className="rounded-lg overflow-hidden w-full" style={{ maxWidth: '400px' }}>
               {/* compact pitch: minimal padding, dark background, constrained width */}
               <div
-                className="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-lg shadow-lg overflow-hidden w-full mx-auto"
-                style={{ aspectRatio: '3/4', maxWidth: '100%' }}
+                className="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-lg shadow-lg overflow-hidden w-full"
+                              style={{ aspectRatio: '2/3' }}
               >
                 {/* Pitch Lines - crisp white on black, minimal extras */}
                 <div className="absolute inset-0">
@@ -298,9 +291,11 @@ export default function LineupBuilder() {
                           ) : (
                             <button
                               onClick={() => addPlayer(position)}
-                              className="w-4 h-4 bg-white/20 border border-white/20 rounded-full hover:bg-white/35 transition-colors"
+                              className="w-8 h-8 bg-white/10 border-2 border-dashed border-white/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center"
                               aria-label={`Add player at ${position.role}`}
-                            />
+                            >
+                              <Plus className="w-4 h-4 text-white/60" />
+                            </button>
                           )}
                       </div>
                     );
@@ -311,9 +306,9 @@ export default function LineupBuilder() {
           </div>
 
           {/* Right Sidebar - Players List */}
-          <div className="lg:col-span-4">
-            <div className="rounded-2xl" style={{ backgroundColor: '#1A1A1A', minWidth: '280px' }}>
-              <div className="px-4 py-3 border-b border-slate-800/60">
+          <div className="lg:col-span-4 order-3">
+            <div className="rounded-2xl" style={{ backgroundColor: '#1A1A1A', minWidth: '300px' }}>
+              <div className="px-3 lg:px-4 py-2 lg:py-3 border-b border-slate-800/60">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-medium text-slate-300">Squad</h3>
@@ -326,20 +321,20 @@ export default function LineupBuilder() {
               </div>
               
               {players.length > 0 ? (
-                <div className="p-3">
-                  <div className="space-y-2">
+                <div className="p-2 lg:p-3">
+                  <div className="space-y-1.5 lg:space-y-2">
                     {players.map((player) => (
                       <div
                         key={player.id}
                         onClick={() => handlePlayerClick(player)}
-                        className={`group relative px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
+                        className={`group relative px-2 py-2 rounded-lg cursor-pointer transition-all ${
                           selectedPlayer === player.id 
                             ? 'bg-emerald-600/10 border border-emerald-500/20' 
                             : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
+                        <div className="flex items-center gap-2">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors ${
                             selectedPlayer === player.id
                               ? 'bg-emerald-600/20 text-emerald-400'
                               : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
@@ -379,77 +374,15 @@ export default function LineupBuilder() {
 
       {/* Bottom Sheet for Player Details */}
       {showBottomSheet && selectedPlayer && (
-        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowBottomSheet(false)}>
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl p-6 max-h-[60vh] overflow-y-auto" style={{ backgroundColor: '#1A1A1A' }} onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-white">Player Details</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowBottomSheet(false)}
-                className="text-slate-400 hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            
-            {(() => {
-              const player = players.find(p => p.id === selectedPlayer);
-              if (!player) return null;
-              
-              return (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Player Name</label>
-                    <input
-                      type="text"
-                      value={player.name}
-                      onChange={(e) => updatePlayer(player.id, { name: e.target.value })}
-                      placeholder="Enter player name"
-                      className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Jersey Number</label>
-                    <input
-                      type="number"
-                      value={player.number}
-                      onChange={(e) => updatePlayer(player.id, { number: parseInt(e.target.value) || 1 })}
-                      min="1"
-                      max="99"
-                      placeholder="Enter jersey number"
-                      title="Jersey Number"
-                      className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Position</label>
-                    <div className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white">
-                      {player.position}
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-3 pt-4">
-                    <Button
-                      onClick={() => removePlayer(player.id)}
-                      className="flex-1 bg-red-600 hover:bg-red-500 text-white rounded-xl"
-                    >
-                      Remove Player
-                    </Button>
-                    <Button
-                      onClick={() => setShowBottomSheet(false)}
-                      className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl"
-                    >
-                      Save Changes
-                    </Button>
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-        </div>
+        <PlayerDetailsModal
+          player={players.find(p => p.id === selectedPlayer)!}
+          onClose={() => setShowBottomSheet(false)}
+          onUpdate={updatePlayer}
+          onRemove={(id) => {
+            removePlayer(id);
+            setShowBottomSheet(false);
+          }}
+        />
       )}
     </div>
   );

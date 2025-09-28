@@ -24,21 +24,28 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
     return (
       <div
         key={`${item.title}-${i}`}
-        className={`shrink-0 rounded-3xl bg-pitch-black border ${v.border} ${v.ring} ${v.shadow} overflow-hidden h-[52svh] sm:h-[60vh]`}
+        className={`shrink-0 rounded-3xl bg-pitch-black border ${v.border} ${v.ring} ${v.shadow} overflow-hidden h-[50svh] sm:h-[60vh]`}
         style={{ width: "clamp(240px, 42vw, 360px)" }}
       >
         <div className="h-full flex flex-col py-1">
-          {/* Top media (60%) */}
-          <div className="h-[60%] w-full bg-gray-800/40 border-b border-gray-800/50" />
-          {/* Bottom content (40%) */}
-          <div className="flex-1 p-4 sm:p-6 flex flex-col justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
-                <Icon className="w-6 h-6 text-white/90" />
+          {/* Top media - responsive height */}
+          <div className="h-[70%] sm:h-[60%] w-full relative overflow-hidden border-b border-gray-800/50">
+            <img 
+              src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+              alt="Football match action"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </div>
+          {/* Bottom content - responsive height */}
+          <div className="flex-1 p-3 sm:p-6 flex flex-col justify-center sm:justify-between">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white/90" />
               </div>
-              <h3 className="text-lg sm:text-2xl font-bold text-white">{item.title}</h3>
+              <h3 className="text-base sm:text-2xl font-bold text-white">{item.title}</h3>
             </div>
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed mt-3">
+            <p className="hidden sm:block text-sm sm:text-base text-gray-300 leading-relaxed mt-3">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae augue in ipsum pulvinar.
             </p>
           </div>
@@ -49,7 +56,7 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
 
   return (
     <div 
-      className="relative isolate"
+      className="relative isolate bg-pitch-black"
       onMouseDown={() => setPaused(true)}
       onMouseUp={() => setPaused(false)}
       onMouseLeave={() => setPaused(false)}
@@ -58,9 +65,6 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
       onTouchEnd={() => setPaused(false)}
       onTouchCancel={() => setPaused(false)}
     >
-      {/* Deck rails hint */}
-      <div className="pointer-events-none absolute -left-2 top-1/2 -translate-y-1/2 h-24 w-2 rounded-r bg-white/5" />
-      <div className="pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 h-24 w-2 rounded-l bg-white/5" />
 
       {/* Viewport */}
       <div className="overflow-hidden bg-pitch-black py-1">

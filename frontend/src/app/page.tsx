@@ -1,16 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/sections/Navbar";
 import BottomNav from "@/components/sections/BottomNav";
 import SwipeDeck, { type SwipeItem } from "@/components/sections/SwipeDeck";
+import PlanCard, { type Plan } from "@/components/sections/PlanCard";
 import Footer from "@/components/sections/Footer";
 import Image from "next/image";
 import { 
@@ -24,8 +18,6 @@ import {
   Zap,
   Activity,
   Brain,
-  Check,
-  Star,
   ArrowRight
 } from "lucide-react";
 
@@ -73,7 +65,7 @@ export default function Home() {
     }
   ];
 
-  const plans = [
+  const plans: Plan[] = [
     {
       name: "Starter",
       price: "$29",
@@ -130,7 +122,7 @@ export default function Home() {
       <Navbar />
       
       {/* Hero Section */}
-      <section id="bg-section" className="relative mobile-bg md:bg-fixed min-h-[100svh] py-8 lg:py-8 overflow-hidden">
+      <section id="bg-section" className="relative mobile-bg md:desktop-bg min-h-[100svh] py-8 lg:py-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-black to-pink-500/5" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,136,0.1),transparent_70%)]" />
         
@@ -141,19 +133,20 @@ export default function Home() {
               #1 Football Management Platform
             </Badge>
 
-            <h1 className="pt-4 md:pt-8 text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+            <h1 className="pt-4 md:pt-8 text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white text-shadow-professional">
               Manage Your <span className="text-accent-green accent-text">Football</span> Team Like a
               Champion
             </h1>
  
-            <p className=" md:block text-xs md:text-2xl text-gray-300 mt-4 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="md:block text-xs md:text-2xl text-gray-300 mt-4 mb-8 max-w-3xl mx-auto leading-relaxed text-shadow-professional">
               Complete football management solution with player analytics, team performance tracking, 
               match analysis, and strategic planning tools used by professional clubs worldwide.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 sm:gap-4 justify-center mb-12 w-full max-w-[200px] sm:max-w-full mx-auto">
               <Button size="lg" className="text-s sm:text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all">
-                Start Managing Today
+                {/* Start Managing Today */}
+                Build Your Lineup
                 <TrendingUp className="ml-2 h-5 w-5" />
               </Button>
               <Button size="lg" variant="outline" className="text-s sm:text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
@@ -207,64 +200,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-pitch-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              Choose Your
-              <span className="text-accent-green"> Game Plan</span>
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Flexible pricing options to fit teams of all sizes and budgets
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card 
-                key={index} 
-                className={`professional-card relative ${plan.popular ? 'subtle-glow-pink border-green-500/50 scale-105' : ''} transition-all hover:border-gray-600`}
-              >
-                {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-600 text-white">
-                    <Star className="w-4 h-4 mr-1" />
-                    Most Popular
-                  </Badge>
-                )}
-                
-                <CardHeader className="text-center">
-                  <CardTitle className="text-2xl text-white">{plan.name}</CardTitle>
-                  <div className="flex items-baseline justify-center gap-1 mt-4">
-                    <span className="text-4xl font-bold text-accent-green">{plan.price}</span>
-                    <span className="text-gray-400">{plan.period}</span>
-                  </div>
-                  <CardDescription className="text-base mt-2 text-gray-300">
-                    {plan.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <Button 
-                    className={`w-full mb-6 ${plan.popular ? 'bg-green-600 text-white hover-glow' : 'border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400'} transition-all`}
-                    variant={plan.popular ? "default" : "outline"}
-                  >
-                    Start Free Trial
-                  </Button>
-
-                  <ul className="space-y-3">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-accent-green flex-shrink-0" />
-                        <span className="text-sm text-white">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <PlanCard plans={plans} />
       
       {/* Footer */}
       <Footer />

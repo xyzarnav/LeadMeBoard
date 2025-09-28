@@ -78,11 +78,63 @@ const formations: Formation[] = [
       { x: 40, y: 30, role: "ST" },
       { x: 60, y: 30, role: "ST" }
     ]
+  },
+  {
+    id: "4-2-3-1",
+    name: "4-2-3-1",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 20, y: 70, role: "LB" },
+      { x: 35, y: 70, role: "CB" },
+      { x: 65, y: 70, role: "CB" },
+      { x: 80, y: 70, role: "RB" },
+      { x: 35, y: 55, role: "CDM" },
+      { x: 65, y: 55, role: "CDM" },
+      { x: 30, y: 40, role: "LW" },
+      { x: 50, y: 40, role: "CAM" },
+      { x: 70, y: 40, role: "RW" },
+      { x: 50, y: 25, role: "ST" }
+    ]
+  },
+  {
+    id: "3-4-3",
+    name: "3-4-3",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 30, y: 70, role: "CB" },
+      { x: 50, y: 70, role: "CB" },
+      { x: 70, y: 70, role: "CB" },
+      { x: 20, y: 50, role: "LWB" },
+      { x: 40, y: 50, role: "CM" },
+      { x: 60, y: 50, role: "CM" },
+      { x: 80, y: 50, role: "RWB" },
+      { x: 25, y: 30, role: "LW" },
+      { x: 50, y: 30, role: "ST" },
+      { x: 75, y: 30, role: "RW" }
+    ]
+  },
+  {
+    id: "4-5-1",
+    name: "4-5-1",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 20, y: 70, role: "LB" },
+      { x: 35, y: 70, role: "CB" },
+      { x: 65, y: 70, role: "CB" },
+      { x: 80, y: 70, role: "RB" },
+      { x: 20, y: 50, role: "LM" },
+      { x: 35, y: 50, role: "CM" },
+      { x: 50, y: 50, role: "CM" },
+      { x: 65, y: 50, role: "CM" },
+      { x: 80, y: 50, role: "RM" },
+      { x: 50, y: 30, role: "ST" }
+    ]
   }
 ];
 
 export default function LineupBuilder() {
   const [selectedFormation, setSelectedFormation] = useState("4-3-3");
+  const [playerCount, setPlayerCount] = useState(11);
   const [players, setPlayers] = useState<Player[]>([]);
   const [teamName, setTeamName] = useState("");
   const [lineupName, setLineupName] = useState("");
@@ -91,7 +143,64 @@ export default function LineupBuilder() {
   const [showFormationSelector, setShowFormationSelector] = useState(false);
   const [showTeamDetails, setShowTeamDetails] = useState(false);
 
-  const currentFormation = formations.find(f => f.id === selectedFormation) || formations[0];
+  // Generate dynamic formations based on player count
+  const generateFormation = (count: number) => {
+    const positions: { x: number; y: number; role: string }[] = [];
+    
+    // Always add goalkeeper
+    positions.push({ x: 50, y: 90, role: "GK" });
+    
+    if (count >= 3) {
+      // Add 2 defenders for minimum
+      positions.push({ x: 35, y: 70, role: "CB" });
+      positions.push({ x: 65, y: 70, role: "CB" });
+    }
+    
+    if (count >= 4) {
+      // Add fullbacks
+      positions.push({ x: 20, y: 70, role: "LB" });
+    }
+    
+    if (count >= 5) {
+      positions.push({ x: 80, y: 70, role: "RB" });
+    }
+    
+    if (count >= 6) {
+      // Add midfielders
+      positions.push({ x: 50, y: 50, role: "CM" });
+    }
+    
+    if (count >= 7) {
+      positions.push({ x: 30, y: 50, role: "CM" });
+    }
+    
+    if (count >= 8) {
+      positions.push({ x: 70, y: 50, role: "CM" });
+    }
+    
+    if (count >= 9) {
+      // Add forwards
+      positions.push({ x: 50, y: 30, role: "ST" });
+    }
+    
+    if (count >= 10) {
+      positions.push({ x: 30, y: 30, role: "ST" });
+    }
+    
+    if (count >= 11) {
+      positions.push({ x: 70, y: 30, role: "ST" });
+    }
+    
+    return {
+      id: `${count}-player`,
+      name: `${count} Players`,
+      positions: positions.slice(0, count)
+    };
+  };
+
+  const currentFormation = playerCount === 11 
+    ? (formations.find(f => f.id === selectedFormation) || formations[0])
+    : generateFormation(playerCount);
 
   const addPlayer = (position: { x: number; y: number; role: string }) => {
     const newPlayer: Player = {
@@ -128,6 +237,18 @@ export default function LineupBuilder() {
     setShowBottomSheet(true);
   };
 
+  const handlePlayerCountChange = (newCount: number) => {
+    setPlayerCount(newCount);
+    // Remove excess players if new count is less than current players
+    if (newCount < players.length) {
+      setPlayers(players.slice(0, newCount));
+    }
+    // Reset formation selection when changing player count
+    if (newCount !== 11) {
+      setSelectedFormation("4-3-3");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black">
       {/* Minimalist Header */}
@@ -142,7 +263,7 @@ export default function LineupBuilder() {
               </Link>
               <div>
                 <h1 className="text-xl font-bold text-white">Lineup Builder</h1>
-                <p className="text-sm text-slate-500">{players.length}/11 players</p>
+                <p className="text-sm text-slate-500">{players.length}/{playerCount} players</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -199,29 +320,77 @@ export default function LineupBuilder() {
           {/* Left Sidebar - Minimalist */}
           <div className="lg:col-span-3 order-2 lg:order-1">
             <div className="space-y-2 lg:space-y-3">
-              {/* Formation Selector */}
-              <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
-                <div className="px-3 py-2 border-b border-slate-800/60">
-                  <h3 className="text-sm font-medium text-slate-400">Formation</h3>
+              {/* Player Count Selector */}
+              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1A1A1A' }}>
+                <div className="px-4 py-3 border-b border-slate-800/60">
+                  <h3 className="text-sm font-medium text-slate-300">Team Size</h3>
                 </div>
-                <div className="p-2">
-                  <div className="grid grid-cols-3 lg:grid-cols-1 gap-1">
-                    {formations.map(formation => (
-                      <Button
-                        key={formation.id}
-                        onClick={() => setSelectedFormation(formation.id)}
-                        className={`h-auto py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                          selectedFormation === formation.id 
-                            ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
-                            : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
-                        }`}
-                      >
-                        {formation.name}
-                      </Button>
-                    ))}
+                <div className="p-6">
+                  <div className="space-y-6">
+                    {/* Current Value Display with Glow Effect */}
+                    <div className="text-center relative">
+                      <div className="relative inline-block">
+                        <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full scale-150"></div>
+                        <div className="relative text-4xl font-black text-emerald-400 tracking-tight">
+                          {playerCount}
+                        </div>
+                      </div>
+                      <div className="text-sm text-slate-400 font-medium mt-1">players on field</div>
+                    </div>
+                    
+                    {/* Advanced Slider Container */}
+                    <div className="relative">
+                      {/* Slider Track with Gradient */}
+                      <div className="relative h-3 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-full shadow-inner">
+                        <div 
+                          className="absolute top-0 left-0 h-3 bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500 rounded-full shadow-lg"
+                          style={{ width: `${((playerCount - 3) / 8) * 100}%` }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/50 to-emerald-300/50 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
+                      
+                      {/* Custom Slider Input */}
+                      <input
+                        type="range"
+                        min="3"
+                        max="11"
+                        value={playerCount}
+                        onChange={(e) => handlePlayerCountChange(parseInt(e.target.value))}
+                        className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer slider-advanced"
+                        style={{ zIndex: 10 }}
+                      />
+                      
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Formation Selector - Only show for 11 players */}
+              {playerCount === 11 && (
+                <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
+                  <div className="px-3 py-2 border-b border-slate-800/60">
+                    <h3 className="text-sm font-medium text-slate-400">Formation</h3>
+                  </div>
+                  <div className="p-3">
+                    <div className="grid grid-cols-3 lg:grid-cols-2 gap-2">
+                      {formations.map(formation => (
+                        <Button
+                          key={formation.id}
+                          onClick={() => setSelectedFormation(formation.id)}
+                          className={`h-auto py-2 px-2 rounded-lg text-xs font-medium transition-all ${
+                            selectedFormation === formation.id 
+                              ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
+                              : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                          }`}
+                        >
+                          {formation.name}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Quick Actions */}
               <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
@@ -315,7 +484,7 @@ export default function LineupBuilder() {
                     <p className="text-xs text-slate-500 mt-0.5">Team Players</p>
                   </div>
                   <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
-                    {players.length}/11
+                    {players.length}/{playerCount}
                   </Badge>
                 </div>
               </div>

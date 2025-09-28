@@ -12,13 +12,18 @@ import {
   Settings,
   Trophy,
   Grid3X3,
-  Plus
+  Plus,
+  X,
+  Users2,
+  Target,
+  Zap
 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function BottomNav() {
   const [activeTab, setActiveTab] = useState("team");
   const [ripple, setRipple] = useState(false);
+  const [fabExpanded, setFabExpanded] = useState(false);
 
   const navItems = [
 
@@ -29,10 +34,52 @@ export default function BottomNav() {
     { id: "profile", icon: Settings, label: "Profile", href: "#" },
   ];
 
+  const fabOptions = [
+    { id: "lineup", icon: Users2, label: "Lineup Builder", color: "bg-blue-600 hover:bg-blue-500" },
+    { id: "option2", icon: Target, label: "Option 2", color: "bg-purple-600 hover:bg-purple-500" }
+    // { id: "option3", icon: Zap, label: "Option 3", color: "bg-orange-600 hover:bg-orange-500" }
+  ];
+
+  // Close FAB when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fabExpanded) {
+        setFabExpanded(false);
+      }
+    };
+
+    if (fabExpanded) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [fabExpanded]);
+
   return (
     <>
+      {/* Blur Overlay - Covers entire screen when FAB is expanded */}
+      {fabExpanded && (
+        <>
+          {/* Dark overlay */}
+          <div className="fixed inset-0 bg-black/40 z-40 md:hidden" 
+               onClick={() => setFabExpanded(false)}>
+          </div>
+          {/* Backdrop blur layer */}
+          <div className="fixed inset-0 z-41 md:hidden" 
+               onClick={() => setFabExpanded(false)}
+               style={{
+                 backdropFilter: 'blur(8px)',
+                 WebkitBackdropFilter: 'blur(8px)',
+                 background: 'rgba(59, 130, 246, 0.1)'
+               }}>
+          </div>
+        </>
+      )}
+
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-2 left-0 right-0 z-40 md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0, bottom: 0 }}>
+      <nav className="fixed bottom-2 left-0 right-0 z-50 md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0, bottom: 0 }}>
         <div className="relative h-20 overflow-hidden" style={{ marginBottom: 0, paddingBottom: 0 }}>
           {/* Main navbar background */}
           <div className="absolute inset-0 bg-black backdrop-blur-xl border-t border-white/20">
@@ -106,61 +153,105 @@ export default function BottomNav() {
         </div>
       </nav>
 
-      {/* Floating Action Button (Center) - Floating above navbar */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 md:hidden">
-        <div className="relative group">
-          {/* FAB Neon Glow */}
-          <div 
-            className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 scale-100 ${
-              activeTab === "plus" 
-                ? 'opacity-35' 
-                : 'opacity-25 group-hover:opacity-35'
-            } bg-green-500`}
-          ></div>
-          
-          {/* FAB Inner Glow */}
-          <div 
-            className={`absolute inset-0 rounded-full blur-md transition-all duration-300 scale-105 ${
-              activeTab === "plus" 
-                ? 'opacity-50' 
-                : 'opacity-35 group-hover:opacity-45'
-            } bg-green-500`}
-          ></div>
-          
-          {/* Main FAB */}
+      {/* Floating Action Button (Center) with Rolling Options */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[100] md:hidden">
+        <div className="relative">
+          {/* FAB Options - Above FAB button */}
+          {fabExpanded && (
+            <div className="absolute bottom-28 left-[40%] transform -translate-x-1/2 z-60">
+              <div className="flex items-center justify-center gap-4">
+                {/* Left Option */}
+                <div className="flex flex-col items-center transition-all duration-500 ease-out"
+                     style={{ transitionDelay: '0ms', opacity: 1 }}>
+                  <div className="mb-2 text-xs text-white bg-none px-1 py-1 rounded whitespace-nowrap">
+                    {fabOptions[0].label}
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log(`Selected: ${fabOptions[0].label}`);
+                      setFabExpanded(false);
+                    }}
+                    className={`${fabOptions[0].color} text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border-2 border-white/20`}
+                  >
+                    <Users2 className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                {/* Center Option - Perfectly Aligned with FAB */}
+                <div className="flex flex-col items-center transition-all duration-500 ease-out"
+                     style={{ transitionDelay: '100ms', opacity: 1 }}>
+                  <div className="mb-2 text-xs text-white bg-none px-0 py-1 rounded whitespace-nowrap">
+                    {fabOptions[1].label}
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log(`Selected: ${fabOptions[1].label}`);
+                      setFabExpanded(false);
+                    }}
+                    className={`${fabOptions[1].color} text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border-2 border-white/20`}
+                  >
+                    <Target className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                {/* Right Option */}
+                {/* <div className="flex flex-col items-center transition-all duration-500 ease-out"
+                     style={{ transitionDelay: '300ms', opacity: 1 }}>
+                  <Button
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log(`Selected: ${fabOptions[2].label}`);
+                      setFabExpanded(false);
+                    }}
+                    className={`${fabOptions[2].color} text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border-2 border-white/20`}
+                  >
+                    <Zap className="w-5 h-5" />
+                  </Button>
+                  <div className="mt-2 text-xs text-white bg-black/90 px-2 py-1 rounded whitespace-nowrap border border-white/20">
+                    {fabOptions[2].label}
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          )}
+
+          {/* Main FAB - Simplified */}
           <Button 
             size="lg" 
-            onClick={() => {
-              setActiveTab("plus");
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('FAB clicked, current state:', fabExpanded);
+              setFabExpanded(!fabExpanded);
               setRipple(true);
               setTimeout(() => setRipple(false), 600);
             }}
-            className={`relative rounded-full text-black transform transition-all duration-300 ease-out active:scale-95 overflow-hidden border-2 border-green-400/40 ${
-              activeTab === "plus" 
-                ? 'w-20 h-20 scale-110 -translate-y-1 shadow-[0_0_30px_rgba(34,197,94,0.48),0_0_60px_rgba(34,197,94,0.24)]' 
-                : 'w-18 h-18 hover:scale-105 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(34,197,94,0.36),0_0_40px_rgba(34,197,94,0.18)] hover:shadow-[0_0_25px_rgba(34,197,94,0.42),0_0_50px_rgba(34,197,94,0.24)]'
+            className={`relative rounded-full bg-green-600 hover:bg-green-500 text-white transform transition-all duration-300 ease-out active:scale-95 border-2 border-green-400/40 shadow-lg hover:shadow-xl cursor-pointer ${
+              fabExpanded 
+                ? 'w-20 h-20 scale-110 -translate-y-1' 
+                : 'w-18 h-18 hover:scale-105 hover:-translate-y-0.5'
             }`}
-            data-color="green"
+            style={{ zIndex: 1001 }}
           >
-            <div className="absolute inset-0 rounded-full bg-green-600 hover:bg-green-500 transition-colors duration-300"></div>
-            
             {/* Ripple effect */}
             <div className={`absolute inset-0 bg-green-300/40 rounded-full transition-all duration-600 ease-out pointer-events-none ${
               ripple ? 'scale-150 opacity-0' : 'scale-0 opacity-100'
             }`}></div>
             
-            {/* Icon */}
-            <Plus className={`relative z-10 stroke-[3] text-white transition-all duration-300 ${
-               activeTab === "plus" ? 'w-8 h-8 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]' : 'w-7 h-7 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]'
-             }`} />
+            {/* Icon - Rotates when expanded */}
+            <div className={`relative z-10 transition-transform duration-300 ${fabExpanded ? 'rotate-45' : 'rotate-0'}`}>
+              {fabExpanded ? (
+                <X className="w-7 h-7" />
+              ) : (
+                <Plus className="w-7 h-7" />
+              )}
+            </div>
           </Button>
-          
-          {/* Active state ring */}
-          <div className={`absolute inset-0 rounded-full border-2 transition-all duration-500 ease-out ${
-            activeTab === "plus" 
-              ? 'border-green-400/60 scale-125 opacity-100' 
-              : 'border-green-400/40 scale-115 opacity-0 group-hover:opacity-100 group-hover:scale-130'
-          }`}></div>
         </div>
       </div>
 

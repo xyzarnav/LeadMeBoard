@@ -5,6 +5,7 @@ import Navbar from "@/components/sections/Navbar";
 import BottomNav from "@/components/sections/BottomNav";
 import SwipeDeck, { type SwipeItem } from "@/components/sections/SwipeDeck";
 import PlanCard, { type Plan } from "@/components/sections/PlanCard";
+// import Testimonials from "@/components/sections/Testimonials";
 import Footer from "@/components/sections/Footer";
 import Image from "next/image";
 import { 
@@ -170,6 +171,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      {/* <Testimonials /> */}
 
       {/* Features Section - Hinge-style Swipe Deck */}
       <section id="features" className="py-12 sm:py-16 lg:py-20 bg-pitch-black">

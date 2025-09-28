@@ -291,10 +291,10 @@ export default function LineupBuilder() {
                           ) : (
                             <button
                               onClick={() => addPlayer(position)}
-                              className="w-8 h-8 bg-white/10 border-2 border-dashed border-white/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center"
+                              className="w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center"
                               aria-label={`Add player at ${position.role}`}
                             >
-                              <Plus className="w-4 h-4 text-white/60" />
+                              <Plus className="w-5 h-5 text-black/80 stroke-2" />
                             </button>
                           )}
                       </div>

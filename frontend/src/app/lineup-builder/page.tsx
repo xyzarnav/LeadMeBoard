@@ -138,7 +138,7 @@ export default function LineupBuilder() {
   return (
     <div className="min-h-screen bg-black">
       {/* Minimalist Header */}
-      <div className="sticky top-0 z-50 bg-black/95 backdrop-blur-xl border-b border-slate-900">
+      <div className="sticky top-0 z-50 bg-gray-900/100 backdrop-blur-xl border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -171,7 +171,7 @@ export default function LineupBuilder() {
 
       {/* Team Details - Minimalist */}
       {showTeamDetails && (
-        <div className="bg-slate-900/50 border-b border-slate-900">
+        <div className="bg-white border-b border-slate-900">
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -200,24 +200,24 @@ export default function LineupBuilder() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
           
           {/* Left Sidebar - Minimalist */}
-          <div className="lg:col-span-3">
-            <div className="space-y-4">
+          <div className="lg:col-span-2">
+            <div className="space-y-3">
               {/* Formation Selector */}
-              <div className="rounded-2xl bg-slate-900/30 backdrop-blur-sm">
-                <div className="px-4 py-3 border-b border-slate-800/60">
+              <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
+                <div className="px-3 py-2 border-b border-slate-800/60">
                   <h3 className="text-sm font-medium text-slate-400">Formation</h3>
                 </div>
                 <div className="p-2">
-                  <div className="grid grid-cols-2 gap-1.5">
+                  <div className="grid grid-cols-1 gap-1">
                     {formations.map(formation => (
                       <Button
                         key={formation.id}
                         onClick={() => setSelectedFormation(formation.id)}
-                        className={`h-auto py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                        className={`h-auto py-2 px-3 rounded-lg text-sm font-medium transition-all ${
                           selectedFormation === formation.id 
                             ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
                             : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
@@ -231,21 +231,21 @@ export default function LineupBuilder() {
               </div>
 
               {/* Quick Actions */}
-              <div className="rounded-2xl bg-slate-900/30 backdrop-blur-sm">
-                <div className="px-4 py-3 border-b border-slate-800/60">
+              <div className="rounded-xl" style={{ backgroundColor: '#1A1A1A' }}>
+                <div className="px-3 py-2 border-b border-slate-800/60">
                   <h3 className="text-sm font-medium text-slate-400">Actions</h3>
                 </div>
                 <div className="p-2">
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     <Button 
-                      className="w-full h-auto py-2.5 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
+                      className="w-full h-auto py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
                     >
                       <Save className="w-4 h-4 mr-2 opacity-80" />
                       Save Lineup
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full h-auto py-2.5 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
+                      className="w-full h-auto py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
                     >
                       <Share2 className="w-4 h-4 mr-2 opacity-80" />
                       Share Lineup
@@ -256,12 +256,12 @@ export default function LineupBuilder() {
             </div>
           </div>
           {/* Main Pitch Area */}
-          <div className="lg:col-span-5">
-            <div className="rounded-md overflow-hidden mx-auto" style={{ maxWidth: '400px' }}>
+          <div className="lg:col-span-6">
+            <div className="rounded-lg overflow-hidden mx-auto" style={{ maxWidth: '450px' }}>
               {/* compact pitch: minimal padding, dark background, constrained width */}
               <div
-                className="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-md shadow-sm overflow-hidden w-full mx-auto"
-                style={{ aspectRatio: '2/3', maxWidth: '100%' }}
+                className="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-lg shadow-lg overflow-hidden w-full mx-auto"
+                style={{ aspectRatio: '3/4', maxWidth: '100%' }}
               >
                 {/* Pitch Lines - crisp white on black, minimal extras */}
                 <div className="absolute inset-0">
@@ -283,25 +283,25 @@ export default function LineupBuilder() {
                         className="absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
                         style={{ left: `${position.x}%`, top: `${position.y}%` }}
                       >
-                        {player ? (
-                          <div className="relative">
-                            <button
-                              onClick={() => handlePlayerClick(player)}
-                              className="w-8 h-8 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-xs transition-transform hover:scale-105"
-                            >
-                              {player.number}
-                            </button>
-                            <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[60px]">
-                              {player.name || `P${player.number}`}
+                          {player ? (
+                            <div className="relative">
+                              <button
+                                onClick={() => handlePlayerClick(player)}
+                                className="w-10 h-10 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-transform hover:scale-105"
+                              >
+                                {player.number}
+                              </button>
+                              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[60px]">
+                                {player.name || `P${player.number}`}
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => addPlayer(position)}
-                            className="w-3 h-3 bg-white/20 border border-white/20 rounded-full hover:bg-white/35 transition-colors"
-                            aria-label={`Add player at ${position.role}`}
-                          />
-                        )}
+                          ) : (
+                            <button
+                              onClick={() => addPlayer(position)}
+                              className="w-4 h-4 bg-white/20 border border-white/20 rounded-full hover:bg-white/35 transition-colors"
+                              aria-label={`Add player at ${position.role}`}
+                            />
+                          )}
                       </div>
                     );
                   })}
@@ -312,7 +312,7 @@ export default function LineupBuilder() {
 
           {/* Right Sidebar - Players List */}
           <div className="lg:col-span-4">
-            <div className="bg-slate-900/30 backdrop-blur-sm rounded-2xl" style={{ minWidth: '280px' }}>
+            <div className="rounded-2xl" style={{ backgroundColor: '#1A1A1A', minWidth: '280px' }}>
               <div className="px-4 py-3 border-b border-slate-800/60">
                 <div className="flex items-center justify-between">
                   <div>
@@ -326,20 +326,20 @@ export default function LineupBuilder() {
               </div>
               
               {players.length > 0 ? (
-                <div className="p-1.5">
-                  <div className="space-y-0.5">
+                <div className="p-3">
+                  <div className="space-y-2">
                     {players.map((player) => (
                       <div
                         key={player.id}
                         onClick={() => handlePlayerClick(player)}
-                        className={`group relative px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${
+                        className={`group relative px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
                           selectedPlayer === player.id 
                             ? 'bg-emerald-600/10 border border-emerald-500/20' 
                             : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors ${
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-colors ${
                             selectedPlayer === player.id
                               ? 'bg-emerald-600/20 text-emerald-400'
                               : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
@@ -347,11 +347,11 @@ export default function LineupBuilder() {
                             {player.number}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-xs font-medium text-slate-200 truncate">
+                            <div className="text-sm font-medium text-slate-200 truncate">
                               {player.name || `Player ${player.number}`}
                             </div>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-[10px] font-medium text-slate-400">{player.position}</span>
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <span className="text-xs font-medium text-slate-400">{player.position}</span>
                             </div>
                           </div>
                         </div>
@@ -380,7 +380,7 @@ export default function LineupBuilder() {
       {/* Bottom Sheet for Player Details */}
       {showBottomSheet && selectedPlayer && (
         <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowBottomSheet(false)}>
-          <div className="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-2xl p-6 max-h-[60vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl p-6 max-h-[60vh] overflow-y-auto" style={{ backgroundColor: '#1A1A1A' }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white">Player Details</h3>
               <Button

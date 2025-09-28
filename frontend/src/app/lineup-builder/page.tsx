@@ -374,6 +374,56 @@ export default function LineupBuilder() {
     document.addEventListener('mouseup', handleMouseUp, { passive: false });
   };
 
+  const handleTouchStart = (playerId: string, e: React.TouchEvent) => {
+    if (!isFreeFormation || !dragEnabled) return;
+    
+    console.log('Touch start on player:', playerId, 'Free formation:', isFreeFormation, 'Drag enabled:', dragEnabled);
+    
+    e.preventDefault();
+    e.stopPropagation();
+    setDraggedPlayer(playerId);
+    setHasDragged(false);
+    
+    // Prevent page scrolling during drag
+    document.body.style.overflow = 'hidden';
+    
+    const container = document.querySelector('.pitch-container');
+    if (!container) return;
+    
+    const handleTouchMove = (e: Event) => {
+      e.preventDefault();
+      
+      // Set hasDragged to true when movement occurs
+      setHasDragged(true);
+      
+      const currentRect = container.getBoundingClientRect();
+      const touchEvent = e as TouchEvent;
+      const touch = touchEvent.touches[0];
+      const touchX = touch.clientX - currentRect.left;
+      const touchY = touch.clientY - currentRect.top;
+      
+      // Convert to percentage
+      const newX = Math.max(5, Math.min(95, (touchX / currentRect.width) * 100));
+      const newY = Math.max(5, Math.min(95, (touchY / currentRect.height) * 100));
+      
+      console.log('Moving player to:', newX, newY);
+      handlePlayerDrag(playerId, newX, newY);
+    };
+
+    const handleTouchEnd = (e: Event) => {
+      e.preventDefault();
+      console.log('Touch end, stopping drag');
+      setDraggedPlayer(null);
+      // Restore page scrolling
+      document.body.style.overflow = 'auto';
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+  };
+
   const handlePositionMouseDown = (positionIndex: number, e: React.MouseEvent) => {
     if (!isFreeFormation || !dragEnabled) return;
     
@@ -416,6 +466,52 @@ export default function LineupBuilder() {
 
     document.addEventListener('mousemove', handleMouseMove, { passive: false });
     document.addEventListener('mouseup', handleMouseUp, { passive: false });
+  };
+
+  const handlePositionTouchStart = (positionIndex: number, e: React.TouchEvent) => {
+    if (!isFreeFormation || !dragEnabled) return;
+    
+    console.log('Touch start on position:', positionIndex, 'Free formation:', isFreeFormation, 'Drag enabled:', dragEnabled);
+    
+    e.preventDefault();
+    e.stopPropagation();
+    setDraggedPlayer(`position-${positionIndex}`);
+    
+    // Prevent page scrolling during drag
+    document.body.style.overflow = 'hidden';
+    
+    const container = document.querySelector('.pitch-container');
+    if (!container) return;
+    
+    const handleTouchMove = (e: Event) => {
+      e.preventDefault();
+      
+      const currentRect = container.getBoundingClientRect();
+      const touchEvent = e as TouchEvent;
+      const touch = touchEvent.touches[0];
+      const touchX = touch.clientX - currentRect.left;
+      const touchY = touch.clientY - currentRect.top;
+      
+      // Convert to percentage
+      const newX = Math.max(5, Math.min(95, (touchX / currentRect.width) * 100));
+      const newY = Math.max(5, Math.min(95, (touchY / currentRect.height) * 100));
+      
+      console.log('Moving position to:', newX, newY);
+      handlePositionDrag(positionIndex, newX, newY);
+    };
+
+    const handleTouchEnd = (e: Event) => {
+      e.preventDefault();
+      console.log('Touch end, stopping position drag');
+      setDraggedPlayer(null);
+      // Restore page scrolling
+      document.body.style.overflow = 'auto';
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
   };
 
   return (
@@ -495,8 +591,8 @@ export default function LineupBuilder() {
                 <div className="hidden sm:block px-3 sm:px-4 py-1 border-b border-slate-800/60">
                   <h3 className="text-xs sm:text-sm font-medium text-slate-300">Team Size</h3>
                 </div>
-                <div className="p-0 sm:p-2 lg:pb-8 xl:pb-10">
-                  <div className="space-y-1 sm:space-y-2">
+                <div className="p-0 sm:p-2 lg:pb-12 xl:pb-16">
+                  <div className="space-y-1 sm:space-y-4">
                     {/* Mobile: Compact Layout - Everything in one row */}
                     <div className="block sm:hidden">
                       <div className="flex items-center gap-2">
@@ -742,18 +838,40 @@ export default function LineupBuilder() {
                         </div>
                       </div>
                       
-                      {/* Drag Toggle - Only show when Free is selected */}
+                      {/* Drag Toggle and Reset - Only show when Free is selected */}
                       {isFreeFormation && (
-                        <Button
-                          onClick={() => setDragEnabled(!dragEnabled)}
-                          className={`h-8 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
-                            dragEnabled 
-                              ? 'bg-green-600/20 text-green-400 ring-1 ring-green-500/30' 
-                              : 'bg-blue-600/20 text-blue-400 ring-1 ring-blue-500/30'
-                          }`}
-                        >
-                          {dragEnabled ? 'Drag On' : 'Drag Off'}
-                        </Button>
+                        <>
+                          <Button
+                            onClick={() => setDragEnabled(!dragEnabled)}
+                            className={`h-8 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
+                              dragEnabled 
+                                ? 'bg-green-600/20 text-green-400 ring-1 ring-green-500/30' 
+                                : 'bg-blue-600/20 text-blue-400 ring-1 ring-blue-500/30'
+                            }`}
+                          >
+                            {dragEnabled ? 'Drag On' : 'Drag Off'}
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              console.log('Reset clicked - Clearing all players');
+                              
+                              // Clear all players
+                              setPlayers([]);
+                              setSelectedPlayer(null);
+                              setShowBottomSheet(false);
+                              
+                              // Reset custom formation to default
+                              const defaultFormation = generateFormation(playerCount);
+                              setCustomFormation(defaultFormation.positions);
+                              
+                              // Disable drag mode
+                              setDragEnabled(false);
+                            }}
+                            className="h-8 px-2 py-1 rounded-lg text-xs font-medium bg-orange-600/20 text-orange-400 hover:bg-orange-600/30 hover:text-orange-300 ring-1 ring-orange-500/30 transition-all"
+                          >
+                            Reset
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>
@@ -935,6 +1053,7 @@ export default function LineupBuilder() {
                             <div className="relative">
                               <button
                                 onMouseDown={(e) => handleMouseDown(player.id, e)}
+                                onTouchStart={(e) => handleTouchStart(player.id, e)}
                                 onClick={dragEnabled ? undefined : (e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
@@ -961,6 +1080,7 @@ export default function LineupBuilder() {
                             players.length < playerCount && (
                               <button
                                 onMouseDown={(e) => handlePositionMouseDown(index, e)}
+                                onTouchStart={(e) => handlePositionTouchStart(index, e)}
                                 onClick={() => addPlayer(position)}
                                 className={`w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center ${
                                   isFreeFormation ? 'cursor-move' : ''
@@ -990,6 +1110,7 @@ export default function LineupBuilder() {
                               <div className="relative">
                                 <button
                                   onMouseDown={(e) => handleMouseDown(player.id, e)}
+                                  onTouchStart={(e) => handleTouchStart(player.id, e)}
                                   onClick={dragEnabled ? undefined : () => handlePlayerClick(player)}
                                   className={`w-10 h-10 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-sm transition-transform hover:scale-105 ${
                                     draggedPlayer === player.id ? 'scale-110 shadow-lg' : ''

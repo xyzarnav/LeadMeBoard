@@ -546,7 +546,14 @@ export default function LineupBuilder() {
                               background: 'transparent',
                               appearance: 'none',
                               WebkitAppearance: 'none',
-                              MozAppearance: 'none'
+                              MozAppearance: 'none',
+                              width: '100%',
+                              height: '12px',
+                              position: 'absolute',
+                              top: '0',
+                              left: '0',
+                              transform: 'translateY(0)',
+                              boxSizing: 'border-box'
                             }}
                             tabIndex={-1}
                           />
@@ -632,7 +639,14 @@ export default function LineupBuilder() {
                             background: 'transparent',
                             appearance: 'none',
                             WebkitAppearance: 'none',
-                            MozAppearance: 'none'
+                            MozAppearance: 'none',
+                            width: '100%',
+                            height: '12px',
+                            position: 'absolute',
+                            top: '0',
+                            left: '0',
+                            transform: 'translateY(0)',
+                            boxSizing: 'border-box'
                           }}
                           tabIndex={-1}
                         />

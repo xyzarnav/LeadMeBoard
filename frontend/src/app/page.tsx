@@ -145,10 +145,12 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 sm:gap-4 justify-center mb-12 w-full max-w-[200px] sm:max-w-full mx-auto">
-              <Button size="lg" className="text-s sm:text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all">
-                {/* Start Managing Today */}
-                Build Your Lineup
-                <TrendingUp className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-s sm:text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all" asChild>
+                <a href="/lineup-builder">
+                  {/* Start Managing Today */}
+                  Build Your Lineup
+                  <TrendingUp className="ml-2 h-5 w-5" />
+                </a>
               </Button>
               <Button size="lg" variant="outline" className="text-s sm:text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
                 <Play className="mr-2 h-5 w-5" />

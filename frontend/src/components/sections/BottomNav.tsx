@@ -172,6 +172,7 @@ export default function BottomNav() {
                       e.stopPropagation();
                       console.log(`Selected: ${fabOptions[0].label}`);
                       setFabExpanded(false);
+                      window.location.href = '/lineup-builder';
                     }}
                     className={`${fabOptions[0].color} text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border-2 border-white/20`}
                   >

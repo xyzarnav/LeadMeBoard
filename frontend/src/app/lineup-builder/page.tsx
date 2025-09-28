@@ -1,0 +1,436 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  ArrowLeft, 
+  Plus, 
+  X, 
+  Save,
+  Share2,
+  ChevronDown,
+  ChevronUp,
+  Settings,
+  Users,
+  Target,
+  Zap
+} from "lucide-react";
+import Link from "next/link";
+
+interface Player {
+  id: string;
+  name: string;
+  position: string;
+  number: number;
+  x: number;
+  y: number;
+}
+
+interface Formation {
+  id: string;
+  name: string;
+  positions: { x: number; y: number; role: string }[];
+}
+
+const formations: Formation[] = [
+  {
+    id: "4-3-3",
+    name: "4-3-3",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 20, y: 70, role: "LB" },
+      { x: 35, y: 70, role: "CB" },
+      { x: 65, y: 70, role: "CB" },
+      { x: 80, y: 70, role: "RB" },
+      { x: 30, y: 50, role: "CM" },
+      { x: 50, y: 50, role: "CM" },
+      { x: 70, y: 50, role: "CM" },
+      { x: 20, y: 30, role: "LW" },
+      { x: 50, y: 30, role: "ST" },
+      { x: 80, y: 30, role: "RW" }
+    ]
+  },
+  {
+    id: "4-4-2",
+    name: "4-4-2",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 20, y: 70, role: "LB" },
+      { x: 35, y: 70, role: "CB" },
+      { x: 65, y: 70, role: "CB" },
+      { x: 80, y: 70, role: "RB" },
+      { x: 20, y: 50, role: "LM" },
+      { x: 40, y: 50, role: "CM" },
+      { x: 60, y: 50, role: "CM" },
+      { x: 80, y: 50, role: "RM" },
+      { x: 35, y: 30, role: "ST" },
+      { x: 65, y: 30, role: "ST" }
+    ]
+  },
+  {
+    id: "3-5-2",
+    name: "3-5-2",
+    positions: [
+      { x: 50, y: 90, role: "GK" },
+      { x: 30, y: 70, role: "CB" },
+      { x: 50, y: 70, role: "CB" },
+      { x: 70, y: 70, role: "CB" },
+      { x: 20, y: 50, role: "LWB" },
+      { x: 40, y: 50, role: "CM" },
+      { x: 50, y: 50, role: "CM" },
+      { x: 60, y: 50, role: "CM" },
+      { x: 80, y: 50, role: "RWB" },
+      { x: 40, y: 30, role: "ST" },
+      { x: 60, y: 30, role: "ST" }
+    ]
+  }
+];
+
+export default function LineupBuilder() {
+  const [selectedFormation, setSelectedFormation] = useState("4-3-3");
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [teamName, setTeamName] = useState("");
+  const [lineupName, setLineupName] = useState("");
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showFormationSelector, setShowFormationSelector] = useState(false);
+  const [showTeamDetails, setShowTeamDetails] = useState(false);
+
+  const currentFormation = formations.find(f => f.id === selectedFormation) || formations[0];
+
+  const addPlayer = (position: { x: number; y: number; role: string }) => {
+    const newPlayer: Player = {
+      id: `player-${Date.now()}`,
+      name: "",
+      position: position.role,
+      number: players.length + 1,
+      x: position.x,
+      y: position.y
+    };
+    setPlayers([...players, newPlayer]);
+    setSelectedPlayer(newPlayer.id);
+    setShowBottomSheet(true);
+  };
+
+  const updatePlayer = (id: string, updates: Partial<Player>) => {
+    setPlayers(players.map(p => p.id === id ? { ...p, ...updates } : p));
+  };
+
+  const removePlayer = (id: string) => {
+    setPlayers(players.filter(p => p.id !== id));
+    if (selectedPlayer === id) {
+      setSelectedPlayer(null);
+      setShowBottomSheet(false);
+    }
+  };
+
+  const getPlayerAtPosition = (x: number, y: number) => {
+    return players.find(p => Math.abs(p.x - x) < 5 && Math.abs(p.y - y) < 5);
+  };
+
+  const handlePlayerClick = (player: Player) => {
+    setSelectedPlayer(player.id);
+    setShowBottomSheet(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-black">
+      {/* Minimalist Header */}
+      <div className="sticky top-0 z-50 bg-black/95 backdrop-blur-xl border-b border-slate-900">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl">
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-xl font-bold text-white">Lineup Builder</h1>
+                <p className="text-sm text-slate-500">{players.length}/11 players</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowTeamDetails(!showTeamDetails)}
+                className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl"
+              >
+                <Settings className="w-5 h-5" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-2 rounded-xl">
+                <Share2 className="w-5 h-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Team Details - Minimalist */}
+      {showTeamDetails && (
+        <div className="bg-slate-900/50 border-b border-slate-900">
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Team Name</label>
+                <input
+                  type="text"
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  placeholder="Enter team name"
+                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Lineup Name</label>
+                <input
+                  type="text"
+                  value={lineupName}
+                  onChange={(e) => setLineupName(e.target.value)}
+                  placeholder="Enter lineup name"
+                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Left Sidebar - Minimalist */}
+          <div className="lg:col-span-3">
+            <div className="space-y-4">
+              {/* Formation Selector */}
+              <div className="rounded-2xl bg-slate-900/30 backdrop-blur-sm">
+                <div className="px-4 py-3 border-b border-slate-800/60">
+                  <h3 className="text-sm font-medium text-slate-400">Formation</h3>
+                </div>
+                <div className="p-2">
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {formations.map(formation => (
+                      <Button
+                        key={formation.id}
+                        onClick={() => setSelectedFormation(formation.id)}
+                        className={`h-auto py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                          selectedFormation === formation.id 
+                            ? 'bg-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/30' 
+                            : 'bg-slate-800/40 text-slate-300 hover:bg-slate-800/60 hover:text-slate-200'
+                        }`}
+                      >
+                        {formation.name}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="rounded-2xl bg-slate-900/30 backdrop-blur-sm">
+                <div className="px-4 py-3 border-b border-slate-800/60">
+                  <h3 className="text-sm font-medium text-slate-400">Actions</h3>
+                </div>
+                <div className="p-2">
+                  <div className="space-y-1.5">
+                    <Button 
+                      className="w-full h-auto py-2.5 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      <Save className="w-4 h-4 mr-2 opacity-80" />
+                      Save Lineup
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full h-auto py-2.5 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      <Share2 className="w-4 h-4 mr-2 opacity-80" />
+                      Share Lineup
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Main Pitch Area */}
+          <div className="lg:col-span-6">
+            <div className="rounded-md overflow-hidden mx-auto" style={{ maxWidth: '400px' }}>
+              {/* compact pitch: minimal padding, dark background, constrained width */}
+              <div
+                className="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-600 rounded-md shadow-sm overflow-hidden w-full mx-auto"
+                style={{ aspectRatio: '2/3', maxWidth: '100%' }}
+              >
+                {/* Pitch Lines - crisp white on black, minimal extras */}
+                <div className="absolute inset-0">
+                  <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-white/85"></div>
+                  <div className="absolute top-1/2 left-1/2 w-16 h-16 border-[1.5px] border-white/85 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+                  <div className="absolute bottom-2 left-1/4 w-1/2 h-10 border-[1.2px] border-white/80"></div>
+                  <div className="absolute top-2 left-1/4 w-1/2 h-10 border-[1.2px] border-white/80"></div>
+                  <div className="absolute bottom-2 left-1/2 w-6 h-2 border-[1.2px] border-white/80 transform -translate-x-1/2"></div>
+                  <div className="absolute top-2 left-1/2 w-6 h-2 border-[1.2px] border-white/80 transform -translate-x-1/2"></div>
+                </div>
+
+                {/* Formation Positions - no outer padding, minimal elements */}
+                <div className="absolute inset-0">
+                  {currentFormation.positions.map((position, index) => {
+                    const player = getPlayerAtPosition(position.x, position.y);
+                    return (
+                      <div
+                        key={index}
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
+                        style={{ left: `${position.x}%`, top: `${position.y}%` }}
+                      >
+                        {player ? (
+                          <div className="relative">
+                            <button
+                              onClick={() => handlePlayerClick(player)}
+                              className="w-8 h-8 bg-neutral-900 border border-white/85 rounded-full flex items-center justify-center text-white font-semibold text-xs transition-transform hover:scale-105"
+                            >
+                              {player.number}
+                            </button>
+                            <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[60px]">
+                              {player.name || `P${player.number}`}
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => addPlayer(position)}
+                            className="w-3 h-3 bg-white/20 border border-white/20 rounded-full hover:bg-white/35 transition-colors"
+                            aria-label={`Add player at ${position.role}`}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar - Players List */}
+          <div className="lg:col-span-3">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-sm font-semibold text-slate-300">Players</h3>
+                <Badge variant="secondary" className="bg-emerald-600 text-white">
+                  {players.length}/11
+                </Badge>
+              </div>
+              
+              {players.length > 0 ? (
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {players.map((player) => (
+                    <div
+                      key={player.id}
+                      onClick={() => handlePlayerClick(player)}
+                      className={`p-3 rounded-xl cursor-pointer transition-all ${
+                        selectedPlayer === player.id 
+                          ? 'bg-emerald-600/20 border border-emerald-500/30' 
+                          : 'bg-slate-800/50 border border-slate-700 hover:bg-slate-800 hover:border-slate-600'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                          {player.number}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-white font-medium truncate">
+                            {player.name || `Player ${player.number}`}
+                          </div>
+                          <div className="text-xs text-slate-400">{player.position}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Users className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="text-slate-500 text-sm">No players added yet</p>
+                  <p className="text-slate-600 text-xs mt-1">Tap positions on the pitch to add players</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Sheet for Player Details */}
+      {showBottomSheet && selectedPlayer && (
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowBottomSheet(false)}>
+          <div className="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-2xl p-6 max-h-[60vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white">Player Details</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowBottomSheet(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            
+            {(() => {
+              const player = players.find(p => p.id === selectedPlayer);
+              if (!player) return null;
+              
+              return (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Player Name</label>
+                    <input
+                      type="text"
+                      value={player.name}
+                      onChange={(e) => updatePlayer(player.id, { name: e.target.value })}
+                      placeholder="Enter player name"
+                      className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Jersey Number</label>
+                    <input
+                      type="number"
+                      value={player.number}
+                      onChange={(e) => updatePlayer(player.id, { number: parseInt(e.target.value) || 1 })}
+                      min="1"
+                      max="99"
+                      className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Position</label>
+                    <div className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white">
+                      {player.position}
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3 pt-4">
+                    <Button
+                      onClick={() => removePlayer(player.id)}
+                      className="flex-1 bg-red-600 hover:bg-red-500 text-white rounded-xl"
+                    >
+                      Remove Player
+                    </Button>
+                    <Button
+                      onClick={() => setShowBottomSheet(false)}
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl"
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+  

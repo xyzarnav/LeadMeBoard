@@ -535,3 +535,16 @@
   animation: sliderGlow 2s ease-in-out infinite;
 }
 
+/* Prevent text selection during drag */
+.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.dragging * {
+  pointer-events: none;
+}
+
+

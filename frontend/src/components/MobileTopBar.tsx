@@ -41,7 +41,7 @@ export function MobileTopBar({
 }: MobileTopBarProps) {
   return (
   // fixed on mobile to avoid container-induced gaps; dynamic top offset controls overlap with navbar
-  <div className={`block sm:hidden fixed left-0 right-0 z-[1200] p-2  ${topOffsetClass ?? 'top-14'} transition-[top] duration-200`}>
+  <div className={`block sm:hidden fixed left-0 right-0 z-[1200] p-2 px-4  ${topOffsetClass ?? 'top-14'} transition-[top] duration-200`}>
       <div className="mx-auto max-w-3xl bg-gradient-to-b from-slate-900/90 to-slate-900 rounded-2xl shadow-lg border border-slate-800/60 p-4">
         <div className="flex items-right">
           {/* Left group: free toggle + formation select */}

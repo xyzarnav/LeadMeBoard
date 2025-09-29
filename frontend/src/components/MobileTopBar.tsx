@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Save, Share2, Plus, Minus, Grid } from "lucide-react";
+import { Save, Share2, Plus, Minus, Grid, Brush } from "lucide-react";
 import SimpleDropdown from "@/components/ui/dropdown-menu";
 import React from "react";
 
@@ -21,6 +21,7 @@ interface MobileTopBarProps {
   dragEnabled: boolean;
   onDragToggle: () => void;
   onReset: () => void;
+  topOffsetClass?: string;
 }
 
 export function MobileTopBar({
@@ -35,11 +36,12 @@ export function MobileTopBar({
   onShare,
   dragEnabled,
   onDragToggle,
-  onReset
+  onReset,
+  topOffsetClass
 }: MobileTopBarProps) {
   return (
-  // sticky on mobile: remains until it reaches the top of the pitch
-  <div className="block sm:hidden sticky left-0 right-0 z-50 p-0 pb-2 top-14">
+  // fixed on mobile to avoid container-induced gaps; dynamic top offset controls overlap with navbar
+  <div className={`block sm:hidden fixed left-0 right-0 z-[1200] p-2  ${topOffsetClass ?? 'top-14'} transition-[top] duration-200`}>
       <div className="mx-auto max-w-3xl bg-gradient-to-b from-slate-900/90 to-slate-900 rounded-2xl shadow-lg border border-slate-800/60 p-4">
         <div className="flex items-right">
           {/* Left group: free toggle + formation select */}
@@ -49,11 +51,11 @@ export function MobileTopBar({
               size="sm"
               className={`h-10 px-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${isFreeFormation ? 'bg-emerald-600/90 text-white' : 'bg-slate-800/40 text-slate-200'}`}
             >
-              <Grid className="w-4 h-4" />
+              <Brush className="w-4 h-4" />
               <span className="truncate">{isFreeFormation ? 'Free' : 'Tactics'}</span>
             </Button>
 
-            <div className="relative flex-2">
+            <div className="relative flex-2 ">
               {isFreeFormation ? (
                 <div className="flex items-center gap-2">
                   <Button
@@ -86,7 +88,7 @@ export function MobileTopBar({
           </div>
 
           {/* Right group: save/share */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 pl-2">
             <Button onClick={onSave} size="sm" className="h-10 px-3 rounded-lg bg-emerald-600 text-white flex items-center gap-2">
               <Save className="w-4 h-4" />
             </Button>

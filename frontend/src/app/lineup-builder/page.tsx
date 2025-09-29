@@ -599,7 +599,8 @@ export default function LineupBuilder() {
             setDragEnabled(false);
           }}
         />
-        {/* No spacer needed now that MobileTopBar is sticky */}
+        {/* Spacer to prevent MobileTopBar (fixed) from covering content on mobile */}
+        <div className="sm:hidden h-36" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
           
           {/* Left Sidebar - Minimalist (hidden on mobile; replaced by MobileTopBar) */}

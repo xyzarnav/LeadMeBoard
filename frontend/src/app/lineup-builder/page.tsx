@@ -671,15 +671,15 @@ export default function LineupBuilder() {
                 style={{ aspectRatio: '2/3', minHeight: '300px' }}
               >
                 {/* Team Name Form Section - at top near far goal keeper end */}
-                <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10 text-black">
-                  <div className="bg-light-green backdrop-blur-sm border border-white/40 text-black rounded-lg px-0 py-0 shadow-lg">
+                <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10 text-white">
+                  <div className="bg-light-green backdrop-blur-sm border border-white/40 text-white rounded-lg px-0 py-0 shadow-lg">
                     {/* <label className="block text-xs font-medium text-white/90 mb-1 text-center">Team Name</label> */}
                       <input
                         type="text"
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
                         placeholder="Enter team name"
-                        className="w-48 px-3 py-1.5 bg-white/10 border border-white/30 rounded-md text-black text-sm font-bold placeholder-white/60 placeholder:italic placeholder:font-bold focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-center"
+                        className="w-48 px-3 py-1.5 bg-white/10 border border-white/30 rounded-md text-white text-sm font-bold placeholder-white/60 placeholder:italic placeholder:font-bold focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-center"
                       />
                   </div>
                 </div>

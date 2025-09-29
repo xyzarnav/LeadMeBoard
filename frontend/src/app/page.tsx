@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-pitch-black">
       <Navbar />
-      
+      <div className="h-14 md:h-16" />
       {/* Hero Section */}
       <section id="bg-section" className="relative mobile-bg md:desktop-bg min-h-[100svh] py-8 lg:py-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-black to-pink-500/5" />

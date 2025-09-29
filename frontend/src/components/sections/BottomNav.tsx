@@ -79,7 +79,7 @@ export default function BottomNav() {
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-2 left-0 right-0 z-50 md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0, bottom: 0 }}>
+      <nav className="fixed bottom-0 left-0 right-0 z-[1050] md:hidden -mb-px" style={{ marginBottom: 0, paddingBottom: 0 }}>
         <div className="relative h-20 overflow-hidden" style={{ marginBottom: 0, paddingBottom: 0 }}>
           {/* Main navbar background */}
           <div className="absolute inset-0 bg-black backdrop-blur-xl border-t border-white/20">
@@ -154,7 +154,7 @@ export default function BottomNav() {
       </nav>
 
       {/* Floating Action Button (Center) with Rolling Options */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[100] md:hidden">
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[1150] md:hidden">
         <div className="relative">
           {/* FAB Options - Above FAB button */}
           {fabExpanded && (

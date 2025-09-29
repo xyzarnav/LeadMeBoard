@@ -1,7 +1,8 @@
 "use client";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import Image from "next/image";
 
-export type SwipeItem = { title: string; description: string; icon: any };
+export type SwipeItem = { title: string; description: string; icon: React.ElementType };
 
 export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
   const [paused, setPaused] = useState(false);
@@ -30,10 +31,11 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
         <div className="h-full flex flex-col py-1">
           {/* Top media - responsive height */}
           <div className="h-[70%] sm:h-[60%] w-full relative overflow-hidden border-b border-gray-800/50">
-            <img 
+            <Image
               src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
               alt="Football match action"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
@@ -54,7 +56,7 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
     );
   };
 
-  return (
+    return (
     <div 
       className="relative isolate bg-pitch-black"
       onMouseDown={() => setPaused(true)}
@@ -71,10 +73,10 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
         {/* Track (moves to the right) */}
         <div className="group deck-track flex gap-4 will-change-transform">
           {/* Two mirrored tracks to create endless loop */}
-          <div className="flex gap-4 animate-deck-right" style={{ animationPlayState: paused ? 'paused' : 'running' }}>
+          <div className={`flex gap-4 animate-deck-right ${paused ? 'paused' : ''}`}>
             {loop.map((it, i) => renderCard(it, i))}
           </div>
-          <div className="flex gap-4 animate-deck-right" style={{ animationPlayState: paused ? 'paused' : 'running' }} aria-hidden>
+          <div className={`flex gap-4 animate-deck-right ${paused ? 'paused' : ''}`} aria-hidden>
             {loop.map((it, i) => renderCard(it, i + loop.length))}
           </div>
         </div>
@@ -88,6 +90,9 @@ export default function SwipeDeck({ items }: { items: SwipeItem[] }) {
         }
         .animate-deck-right {
           animation: deck-right 50s linear infinite;
+        }
+        .paused {
+          animation-play-state: paused !important;
         }
         @media (min-width: 640px) {
           .animate-deck-right { animation-duration: 56s; }

@@ -24,6 +24,8 @@ import { Player } from "@/types/player";
 import { TeamSizeSelector } from "@/components/TeamSizeSelector";
 import { FormationSelector } from "@/components/FormationSelector";
 import { ActionsPanel } from "@/components/ActionsPanel";
+import MobileTopBar from "@/components/MobileTopBar";
+import Navbar from "@/components/sections/Navbar";
 
 interface Formation {
   id: string;
@@ -519,37 +521,9 @@ export default function LineupBuilder() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Minimalist Header */}
-      <div className="sticky top-0 z-50 bg-gray-900/100 backdrop-blur-xl border-b border-slate-900">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl">
-                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-lg sm:text-xl font-bold text-white">Lineup Builder</h1>
-                <p className="text-xs sm:text-sm text-slate-500">{players.length}/{playerCount} players</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1 sm:gap-2">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setShowTeamDetails(!showTeamDetails)}
-                className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl"
-              >
-                <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white hover:bg-slate-900/50 p-1.5 sm:p-2 rounded-xl">
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navbar />
+      {/* Spacer for fixed navbar */}
+      <div className="h-14 md:h-16" />
 
       {/* Team Details - Minimalist */}
       {showTeamDetails && (
@@ -583,10 +557,53 @@ export default function LineupBuilder() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-3 py-4 sm:py-6">
+        {/* Mobile compact top bar - replaces left sidebar controls on small screens */}
+        <MobileTopBar
+          formations={formations}
+          selectedFormation={selectedFormation}
+          onFormationChange={(id) => setSelectedFormation(id)}
+          isFreeFormation={isFreeFormation}
+          onFreeFormationToggle={() => {
+            const newFreeFormation = !isFreeFormation;
+            setIsFreeFormation(newFreeFormation);
+            if (newFreeFormation) {
+              setSelectedFormation("free");
+              const defaultFormation = generateFormation(playerCount);
+              setCustomFormation(defaultFormation.positions);
+              // enable drag by default when switching to free
+              setDragEnabled(true);
+            } else {
+              setDragEnabled(false);
+            }
+          }}
+          playerCount={playerCount}
+          onPlayerCountChange={handlePlayerCountChange}
+          onSave={() => {
+            // Reuse existing download function from ActionsPanel by triggering DOM event
+            const saveBtn = document.querySelector('.actions-save-button') as HTMLElement;
+            if (saveBtn) saveBtn.click();
+          }}
+          onShare={() => {
+            const shareBtn = document.querySelector('.actions-share-button') as HTMLElement;
+            if (shareBtn) shareBtn.click();
+          }}
+          dragEnabled={dragEnabled}
+          onDragToggle={() => setDragEnabled(!dragEnabled)}
+          onReset={() => {
+            console.log('Reset clicked - Clearing all players (mobile)');
+            setPlayers([]);
+            setSelectedPlayer(null);
+            setShowBottomSheet(false);
+            const defaultFormation = generateFormation(playerCount);
+            setCustomFormation(defaultFormation.positions);
+            setDragEnabled(false);
+          }}
+        />
+        {/* No spacer needed now that MobileTopBar is sticky */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
           
-          {/* Left Sidebar - Minimalist */}
-          <div className="lg:col-span-3 order-1 lg:order-1">
+          {/* Left Sidebar - Minimalist (hidden on mobile; replaced by MobileTopBar) */}
+          <div className="lg:col-span-3 order-1 lg:order-1 hidden sm:block">
             <div className="space-y-2 lg:space-y-4 pb-2">
               {/* Team Size Selector */}
               <TeamSizeSelector 
@@ -869,6 +886,9 @@ export default function LineupBuilder() {
           </div>
         </div>
       </div>
+
+      {/* Bottom padding for mobile nav/FAB overlap protection */}
+      <div className="h-24 md:hidden" />
 
       {/* Bottom Sheet for Player Details */}
       {showBottomSheet && selectedPlayer && (

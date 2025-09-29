@@ -39,7 +39,7 @@ const TwitterCard: React.FC<TwitterCardProps> = ({
       {/* Tweet Content */}
       <div className="mb-4">
         <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
-          "{tweet}"
+          <q>{tweet}</q>
         </p>
       </div>
 

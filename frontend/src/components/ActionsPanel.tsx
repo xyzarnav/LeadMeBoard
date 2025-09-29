@@ -155,19 +155,19 @@ export function ActionsPanel({ players, teamName, lineupName, selectedFormation,
       <div className="p-1 sm:p-2">
         {/* Mobile: One Row Layout */}
         <div className="block sm:hidden">
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             <Button 
               onClick={downloadLineupImage}
-              className="flex-1 h-auto py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-xs font-medium transition-colors"
+              className="actions-save-button flex-1 h-11 py-2 bg-emerald-600/90 hover:bg-emerald-600 text-emerald-50 rounded-lg text-sm font-medium transition-colors"
             >
-              <Save className="w-3 h-3 mr-1 opacity-80" />
+              <Save className="w-4 h-4 mr-2 opacity-90" />
               Save
             </Button>
             <Button 
               variant="outline" 
-              className="flex-1 h-auto py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-xs font-medium transition-colors"
+              className="actions-share-button flex-1 h-11 py-2 bg-slate-800/40 hover:bg-slate-800/60 border-slate-700/50 text-slate-300 hover:text-slate-200 rounded-lg text-sm font-medium transition-colors"
             >
-              <Share2 className="w-3 h-3 mr-1 opacity-80" />
+              <Share2 className="w-4 h-4 mr-2 opacity-90" />
               Share
             </Button>
           </div>

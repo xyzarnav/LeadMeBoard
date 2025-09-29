@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import SimpleDropdown from "@/components/ui/dropdown-menu";
 
 interface Formation {
   id: string;
@@ -54,24 +54,14 @@ export function FormationSelector({
               {isFreeFormation ? '✓ Free' : 'Free'}
             </Button>
             
-            {/* Formation Dropdown - Mobile */}
+            {/* Formation Dropdown - Mobile (SimpleDropdown) */}
             <div className="flex-1 relative">
-              <select
-                value={selectedFormation}
-                onChange={(e) => onFormationChange(e.target.value)}
+              <SimpleDropdown
+                items={formations.map(f => ({ id: f.id, name: f.name }))}
+                selectedId={selectedFormation}
+                onSelect={(id: string) => onFormationChange(id)}
                 disabled={isFreeFormation}
-                className="w-full h-8 px-2 py-1 bg-slate-800/40 border border-slate-700/50 rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed appearance-none"
-              >
-                {formations.map(formation => (
-                  <option key={formation.id} value={formation.id}>
-                    {formation.name}
-                  </option>
-                ))}
-              </select>
-              {/* Custom dropdown arrow */}
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <ChevronDown className="w-3 h-3 text-slate-400" />
-              </div>
+              />
             </div>
             
             {/* Drag Toggle and Reset - Only show when Free is selected */}

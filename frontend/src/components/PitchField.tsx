@@ -159,8 +159,8 @@ const PlayerButton: React.FC<PlayerButtonProps> = ({
     >
       {player.number}
     </button>
-    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[70px]">
-      {player.name || `P${player.number}`}
+    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap max-w-[80px] text-center">
+      <span className="block truncate">{player.name || `P${player.number}`}</span>
       {draggedPlayer === player.id && (
         <div className="text-[8px] text-emerald-400 mt-0.5">
           {Math.round(player.x)}%, {Math.round(player.y)}%

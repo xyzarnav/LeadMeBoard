@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Save, Share2, Plus, Minus, Grid, Brush } from "lucide-react";
+import { Save, Share2, Plus, Minus, Brush } from "lucide-react";
 import SimpleDropdown from "@/components/ui/dropdown-menu";
 import React from "react";
 

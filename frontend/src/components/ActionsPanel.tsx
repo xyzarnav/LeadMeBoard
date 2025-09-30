@@ -5,14 +5,13 @@ import { Save, Share2 } from "lucide-react";
 import { Player } from "@/types/player";
 
 interface ActionsPanelProps {
-  players: Player[];
-  teamName?: string;
-  lineupName?: string;
-  selectedFormation?: string;
-  playerCount: number;
+  readonly players: Player[];
+  readonly teamName?: string;
+  readonly lineupName?: string;
+  readonly selectedFormation?: string;
 }
 
-export function ActionsPanel({ players, teamName, lineupName, selectedFormation, playerCount }: ActionsPanelProps) {
+export function ActionsPanel({ players, teamName, lineupName, selectedFormation }: ActionsPanelProps) {
   const downloadLineupImage = async () => {
     try {
       // Get the pitch container element

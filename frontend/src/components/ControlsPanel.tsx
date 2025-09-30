@@ -46,7 +46,6 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         teamName={teamName}
         lineupName={lineupName}
         selectedFormation={selectedFormation}
-        playerCount={playerCount}
       />
     </div>
   );

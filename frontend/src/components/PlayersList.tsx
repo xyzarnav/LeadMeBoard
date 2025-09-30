@@ -95,20 +95,18 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   dragEnabled,
   onPlayerClick,
 }) => {
-  const handleClick = dragEnabled ? undefined : () => onPlayerClick(player);
-  const handleKeyDown = dragEnabled ? undefined : (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
+  const handleClick = () => {
+    if (!dragEnabled) {
       onPlayerClick(player);
     }
   };
 
   const containerClasses = [
-    'group relative px-2 py-2 rounded-lg transition-all',
+    'group relative px-2 py-2 rounded-lg transition-all w-full text-left border',
     dragEnabled ? 'cursor-default' : 'cursor-pointer',
     isSelected 
-      ? 'bg-emerald-600/10 border border-emerald-500/20' 
-      : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
+      ? 'bg-emerald-600/10 border-emerald-500/20' 
+      : 'bg-slate-800/40 border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
   ].join(' ');
 
   const numberClasses = [
@@ -118,12 +116,29 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
       : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
   ].join(' ');
 
+  if (dragEnabled) {
+    return (
+      <div className={containerClasses}>
+        <div className="flex items-center gap-2">
+          <div className={numberClasses}>
+            {player.number}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-medium text-slate-200 truncate">
+              {player.name || `Player ${player.number}`}
+            </div>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="text-xs font-medium text-slate-400">{player.position}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
+    <button
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      role={dragEnabled ? undefined : "button"}
-      tabIndex={dragEnabled ? undefined : 0}
       className={containerClasses}
     >
       <div className="flex items-center gap-2">
@@ -139,7 +154,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -17,10 +17,8 @@ export default function LineupBuilder() {
     playerCount,
     players,
     teamName,
-    lineupName,
     selectedPlayer,
     showBottomSheet,
-    showTeamDetails,
     isFreeFormation,
     draggedPlayer,
     dragEnabled,
@@ -29,9 +27,7 @@ export default function LineupBuilder() {
 
   const {
     setTeamName,
-    setLineupName,
     setShowBottomSheet,
-    setShowTeamDetails,
     setSelectedFormation,
     setIsFreeFormation,
     setDragEnabled,
@@ -91,36 +87,6 @@ export default function LineupBuilder() {
       {/* Spacer for fixed navbar */}
       <div className="h-14 md:h-16" />
 
-      {/* Team Details - Minimalist */}
-      {showTeamDetails && (
-        <div className="bg-white border-b border-slate-900">
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Team Name</label>
-                <input
-                  type="text"
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  placeholder="Enter team name"
-                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Lineup Name</label>
-                <input
-                  type="text"
-                  value={lineupName}
-                  onChange={(e) => setLineupName(e.target.value)}
-                  placeholder="Enter lineup name"
-                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-3 py-4 sm:py-6">
         {/* Mobile compact top bar */}
@@ -159,7 +125,7 @@ export default function LineupBuilder() {
               dragEnabled={dragEnabled}
               players={players}
               teamName={teamName}
-              lineupName={lineupName}
+              lineupName=""
               onPlayerCountChange={handlePlayerCountChange}
               onFormationChange={setSelectedFormation}
               onFreeFormationToggle={handleFreeFormationToggle}

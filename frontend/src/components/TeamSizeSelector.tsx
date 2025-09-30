@@ -1,11 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 interface TeamSizeSelectorProps {
-  playerCount: number;
-  onPlayerCountChange: (count: number) => void;
+  readonly playerCount: number;
+  readonly onPlayerCountChange: (count: number) => void;
 }
 
 export function TeamSizeSelector({ playerCount, onPlayerCountChange }: TeamSizeSelectorProps) {

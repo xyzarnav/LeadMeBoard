@@ -37,7 +37,7 @@ export default function Navbar() {
               {/* Logo + title */}
               <div className="flex items-center gap-3">
                 <Trophy className="w-7 h-7 text-emerald-400" />
-                <div className="text-sm font-semibold text-white">FootballPro</div>
+                <div className="text-sm font-semibold text-white">Ekturfa</div>
               </div>
 
               {/* Desktop nav */}

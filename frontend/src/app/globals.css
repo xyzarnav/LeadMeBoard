@@ -58,6 +58,46 @@
   --sidebar-ring: #00ff88;
 }
 
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Professional Hero Background with Blur Effects */
+@media (max-width: 768px) {
+  .mobile-bg {
+    background-image: url('/backgroundimages/mobileherobg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    position: relative;
+  }
+}
+
+/* Prevent text selection during drag */
+.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.dragging * {
+  pointer-events: none;
+}
+
 /* Professional Hero Background with Blur Effects */
 @media (max-width: 768px) {
   .mobile-bg {

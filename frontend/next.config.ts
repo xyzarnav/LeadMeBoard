@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Ensure stable builds
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+  // Disable Turbopack explicitly
+  turbo: {
+    rules: {},
+  },
+  // Optimize CSS handling
+  transpilePackages: [],
 };
 
 export default nextConfig;

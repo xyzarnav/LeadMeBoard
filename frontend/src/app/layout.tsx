@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "EkTurfa",
   description: "Modern web application built with Next.js and shadcn/ui",
+  icons: {
+    icon: '/football.ico', // or '/logo.png' if using PNG
+  },
 };
 
 export default function RootLayout({

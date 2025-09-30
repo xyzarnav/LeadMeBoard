@@ -93,13 +93,27 @@ export function ActionsPanel({ players, teamName, lineupName, selectedFormation,
 
         // Player name
         if (player.name) {
-            ctx.fillStyle = '#FF0000'; // Coral red color for names
-            // For clean, modern appearance:
-            ctx.font = 'bold 17px "Inter", "SF Pro Display", "Helvetica Neue", Arial, sans-serif';
+          ctx.font = 'bold 10px "Inter", "SF Pro Display", "Helvetica Neue", Arial, sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(player.name, x, y + 30);
+        
+          const text = player.name;
+          const metrics = ctx.measureText(text);
+          const padding = 4; // extra space around text
+        
+          // Calculate rect dimensions
+          const textWidth = metrics.width + padding * 2;
+          const textHeight = 12 + padding * 2; // 12 ≈ font size (10px + little buffer)
+        
+          // Draw background rectangle (behind text)
+          ctx.fillStyle = '#10B981'; // semi-transparent black
+          ctx.fillRect(x - textWidth / 2, y + 33 - textHeight / 2, textWidth, textHeight);
+        
+          // Draw text on top
+          ctx.fillStyle = '#ffffff'; // white text
+          ctx.fillText(text, x, y + 30);
         }
+        
       });
 
       // Add form section at top of pitch (near far goal keeper end)
@@ -121,13 +135,13 @@ export function ActionsPanel({ players, teamName, lineupName, selectedFormation,
       ctx.fillStyle = 'white';
       ctx.font = 'bold 18px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText(teamName || 'Enter Team Name', formX + formWidth / 2, formY + 22);
+      ctx.fillText(teamName || 'Team', formX + formWidth / 2, formY + 22);
 
       // Add title below form
       ctx.fillStyle = 'white';
-      ctx.font = 'bold italic 18px Arial';
+      ctx.font = 'bold italic 14px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText('Lineup Formation', rect.width / 2, formY + formHeight + 30);
+      ctx.fillText('Lineup Formation', rect.width / 2, formY + formHeight + 10);
 
       // Convert canvas to blob and download
       canvas.toBlob((blob) => {

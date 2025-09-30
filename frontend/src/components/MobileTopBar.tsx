@@ -42,7 +42,7 @@ export function MobileTopBar({
   return (
   // fixed on mobile to avoid container-induced gaps; dynamic top offset controls overlap with navbar
   <div className={`block sm:hidden fixed left-0 right-0 z-[1200] p-2 px-4  ${topOffsetClass ?? 'top-14'} transition-[top] duration-200`}>
-      <div className="mx-auto max-w-3xl bg-gradient-to-b from-slate-900/90 to-slate-900 rounded-2xl shadow-lg border border-slate-800/60 p-4">
+      <div className="mx-auto max-w-3xl bg-gradient-to-b from-slate-900/90 to-slate-900 rounded-2xl shadow-lg border border-slate-800/60 p-2">
         <div className="flex items-right">
           {/* Left group: free toggle + formation select */}
           <div className="flex items-right gap-1 flex-2">
@@ -99,7 +99,7 @@ export function MobileTopBar({
         </div>
 
         {/* Second row: player count controls */}
-        <div className="mt-4 flex items-center gap-4">
+        <div className="mt-1 flex items-center gap-4">
           <Button
             onClick={() => onPlayerCountChange(Math.max(3, playerCount - 1))}
             size="sm"

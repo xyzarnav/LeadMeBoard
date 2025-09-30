@@ -11,16 +11,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Ensure stable builds
+  // Optimize package imports
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
-  // Disable Turbopack explicitly
-  turbo: {
-    rules: {},
-  },
-  // Optimize CSS handling
-  transpilePackages: [],
+  // Set output file tracing root to silence workspace warning
+  outputFileTracingRoot: process.cwd(),
 };
 
 export default nextConfig;

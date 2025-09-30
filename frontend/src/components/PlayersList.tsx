@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, Trash2 } from "lucide-react";
 import { PlayersListProps } from "@/types/lineup";
+import { Player } from "@/types/player";
 
 export const PlayersList: React.FC<PlayersListProps> = ({
   players,
@@ -54,10 +55,10 @@ export const PlayersList: React.FC<PlayersListProps> = ({
 };
 
 interface PlayersGridProps {
-  players: any[];
+  players: Player[];
   selectedPlayer: string | null;
   dragEnabled: boolean;
-  onPlayerClick: (player: any) => void;
+  onPlayerClick: (player: Player) => void;
 }
 
 const PlayersGrid: React.FC<PlayersGridProps> = ({
@@ -82,10 +83,10 @@ const PlayersGrid: React.FC<PlayersGridProps> = ({
 );
 
 interface PlayerCardProps {
-  player: any;
+  player: Player;
   isSelected: boolean;
   dragEnabled: boolean;
-  onPlayerClick: (player: any) => void;
+  onPlayerClick: (player: Player) => void;
 }
 
 const PlayerCard: React.FC<PlayerCardProps> = ({
@@ -93,44 +94,54 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   isSelected,
   dragEnabled,
   onPlayerClick,
-}) => (
-  <div
-    onClick={dragEnabled ? undefined : () => onPlayerClick(player)}
-    onKeyDown={dragEnabled ? undefined : (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        onPlayerClick(player);
-      }
-    }}
-    role={dragEnabled ? undefined : "button"}
-    tabIndex={dragEnabled ? undefined : 0}
-    className={`group relative px-2 py-2 rounded-lg transition-all ${
-      dragEnabled ? 'cursor-default' : 'cursor-pointer'
-    } ${
-      isSelected 
-        ? 'bg-emerald-600/10 border border-emerald-500/20' 
-        : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
-    }`}
-  >
-    <div className="flex items-center gap-2">
-      <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors ${
-        isSelected
-          ? 'bg-emerald-600/20 text-emerald-400'
-          : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
-      }`}>
-        {player.number}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-slate-200 truncate">
-          {player.name || `Player ${player.number}`}
+}) => {
+  const handleClick = dragEnabled ? undefined : () => onPlayerClick(player);
+  const handleKeyDown = dragEnabled ? undefined : (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onPlayerClick(player);
+    }
+  };
+
+  const containerClasses = [
+    'group relative px-2 py-2 rounded-lg transition-all',
+    dragEnabled ? 'cursor-default' : 'cursor-pointer',
+    isSelected 
+      ? 'bg-emerald-600/10 border border-emerald-500/20' 
+      : 'bg-slate-800/40 border border-slate-800/60 hover:bg-slate-800/60 hover:border-slate-700/60'
+  ].join(' ');
+
+  const numberClasses = [
+    'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors',
+    isSelected
+      ? 'bg-emerald-600/20 text-emerald-400'
+      : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700'
+  ].join(' ');
+
+  return (
+    <div
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role={dragEnabled ? undefined : "button"}
+      tabIndex={dragEnabled ? undefined : 0}
+      className={containerClasses}
+    >
+      <div className="flex items-center gap-2">
+        <div className={numberClasses}>
+          {player.number}
         </div>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className="text-xs font-medium text-slate-400">{player.position}</span>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-slate-200 truncate">
+            {player.name || `Player ${player.number}`}
+          </div>
+          <div className="flex items-center gap-1.5 mt-1">
+            <span className="text-xs font-medium text-slate-400">{player.position}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EmptyState: React.FC = () => (
   <div className="px-4 py-6">

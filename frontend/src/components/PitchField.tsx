@@ -1,6 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
-import { PitchFieldProps } from "@/types/lineup";
+import { PitchFieldProps, FormationPosition } from "@/types/lineup";
+import { Player } from "@/types/player";
 
 export const PitchField: React.FC<PitchFieldProps> = ({
   teamName,
@@ -125,12 +126,12 @@ export const PitchField: React.FC<PitchFieldProps> = ({
 };
 
 interface PlayerButtonProps {
-  player: any;
+  player: Player;
   dragEnabled: boolean;
   draggedPlayer: string | null;
   onMouseDown: (playerId: string, e: React.MouseEvent) => void;
   onTouchStart: (playerId: string, e: React.TouchEvent) => void;
-  onClick: (player: any) => void;
+  onClick: (player: Player) => void;
 }
 
 const PlayerButton: React.FC<PlayerButtonProps> = ({
@@ -158,7 +159,7 @@ const PlayerButton: React.FC<PlayerButtonProps> = ({
     >
       {player.number}
     </button>
-    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[60px]">
+    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] text-white bg-black/70 px-1.5 py-0.5 rounded whitespace-nowrap truncate max-w-[70px]">
       {player.name || `P${player.number}`}
       {draggedPlayer === player.id && (
         <div className="text-[8px] text-emerald-400 mt-0.5">
@@ -170,8 +171,8 @@ const PlayerButton: React.FC<PlayerButtonProps> = ({
 );
 
 interface AddPlayerButtonProps {
-  position: any;
-  onAddPlayer: (position: any) => void;
+  position: FormationPosition;
+  onAddPlayer: (position: FormationPosition) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
   onTouchStart?: (e: React.TouchEvent) => void;
   draggedPlayer?: string | null;
@@ -187,18 +188,21 @@ const AddPlayerButton: React.FC<AddPlayerButtonProps> = ({
   draggedPlayer,
   draggedIndex,
   isFreeFormation,
-}) => (
-  <button
-    onMouseDown={onMouseDown}
-    onTouchStart={onTouchStart}
-    onClick={() => onAddPlayer(position)}
-    className={`w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center ${
-      isFreeFormation ? 'cursor-move' : ''
-    } ${draggedPlayer === `position-${draggedIndex}` ? 'scale-110 shadow-lg' : ''}`}
-    aria-label={`Add player at ${position.role}`}
-    style={{ userSelect: 'none', pointerEvents: 'auto' }}
-    tabIndex={0}
-  >
-    <Plus className="w-5 h-5 text-black/80 stroke-2" />
-  </button>
-);
+}) => {
+  const draggedClass = draggedPlayer === `position-${draggedIndex}` ? 'scale-110 shadow-lg' : '';
+  const cursorClass = isFreeFormation ? 'cursor-move' : '';
+  
+  return (
+    <button
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      onClick={() => onAddPlayer(position)}
+      className={`w-8 h-8 bg-white border-2 border-dashed border-black/40 rounded-full hover:bg-white/20 hover:border-white/60 transition-all duration-200 flex items-center justify-center ${cursorClass} ${draggedClass}`}
+      aria-label={`Add player at ${position.role}`}
+      style={{ userSelect: 'none', pointerEvents: 'auto' }}
+      tabIndex={0}
+    >
+      <Plus className="w-5 h-5 text-black/80 stroke-2" />
+    </button>
+  );
+};

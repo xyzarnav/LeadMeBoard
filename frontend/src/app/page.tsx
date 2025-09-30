@@ -1,218 +1,227 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
+import { PlayerDetailsModal } from "@/components/player-details-modal";
+import { PitchField } from "@/components/PitchField";
+import { PlayersList } from "@/components/PlayersList";
+import { ControlsPanel } from "@/components/ControlsPanel";
+import MobileTopBar from "@/components/MobileTopBar";
 import Navbar from "@/components/sections/Navbar";
-import BottomNav from "@/components/sections/BottomNav";
-import SwipeDeck, { type SwipeItem } from "@/components/sections/SwipeDeck";
-import PlanCard, { type Plan } from "@/components/sections/PlanCard";
-// import Testimonials from "@/components/sections/Testimonials";
-import Footer from "@/components/sections/Footer";
-import Image from "next/image";
-import { 
-  Trophy, 
-  TrendingUp, 
-  Play, 
-  Users, 
-  BarChart3, 
-  Target, 
-  Calendar, 
-  Zap,
-  Activity,
-  Brain,
-  ArrowRight
-} from "lucide-react";
+import { formations } from "@/lib/formations";
+import { useLineupBuilder } from "@/hooks/useLineupBuilder";
 
-export default function Home() {
-  const features: SwipeItem[] = [
-    {
-      icon: Users,
-      title: "Player Management",
-      description: "Complete player profiles with stats, injuries, contracts, and performance tracking."
-    },
-    {
-      icon: BarChart3,
-      title: "Advanced Analytics",
-      description: "Deep insights into team performance, player statistics, and match analysis."
-    },
-    {
-      icon: Target,
-      title: "Tactical Planning",
-      description: "Create formations, set tactics, and plan strategies with our interactive tools."
-    },
-    {
-      icon: Calendar,
-      title: "Match Scheduling",
-      description: "Organize fixtures, training sessions, and manage your team's calendar."
-    },
-    {
-      icon: Zap,
-      title: "Real-time Updates",
-      description: "Live match updates, instant notifications, and real-time team communication."
-    },
-    {
-      icon: Trophy,
-      title: "Performance Reports",
-      description: "Detailed reports on individual and team performance with actionable insights."
-    },
-    {
-      icon: Activity,
-      title: "Training Programs",
-      description: "Design and track training sessions, fitness programs, and skill development."
-    },
-    {
-      icon: Brain,
-      title: "AI Recommendations",
-      description: "Smart suggestions for lineups, tactics, and player development based on data."
-    }
-  ];
+export default function LineupBuilder() {
+  const { state, actions } = useLineupBuilder();
 
-  const plans: Plan[] = [
-    {
-      name: "Starter",
-      price: "$29",
-      period: "/month",
-      description: "Perfect for amateur clubs and youth teams",
-      features: [
-        "Up to 25 players",
-        "Basic analytics",
-        "Match scheduling",
-        "Player profiles",
-        "Email support",
-        "Mobile app access"
-      ],
-      popular: false
-    },
-    {
-      name: "Professional",
-      price: "$79",
-      period: "/month",
-      description: "Ideal for semi-professional and professional clubs",
-      features: [
-        "Up to 100 players",
-        "Advanced analytics",
-        "Tactical planning tools",
-        "Injury tracking",
-        "Video analysis",
-        "Priority support",
-        "API access",
-        "Custom reports"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "$199",
-      period: "/month",
-      description: "For large clubs and multi-team organizations",
-      features: [
-        "Unlimited players",
-        "AI-powered insights",
-        "Multi-team management",
-        "Custom integrations",
-        "Dedicated support",
-        "White-label options",
-        "Advanced security",
-        "Training programs"
-      ],
-      popular: false
+  const {
+    selectedFormation,
+    playerCount,
+    players,
+    teamName,
+    lineupName,
+    selectedPlayer,
+    showBottomSheet,
+    showTeamDetails,
+    isFreeFormation,
+    draggedPlayer,
+    dragEnabled,
+    customFormation,
+  } = state;
+
+  const {
+    setTeamName,
+    setLineupName,
+    setShowBottomSheet,
+    setShowTeamDetails,
+    setSelectedFormation,
+    setIsFreeFormation,
+    setDragEnabled,
+    setCustomFormation,
+    addPlayer,
+    updatePlayer,
+    removePlayer,
+    getPlayerAtPosition,
+    handlePlayerClick,
+    handlePlayerCountChange,
+    handlePlayerDrag,
+    handlePositionDrag,
+    handleMouseDown,
+    handleTouchStart,
+    handlePositionMouseDown,
+    handlePositionTouchStart,
+    generateFormation,
+    getCurrentFormation,
+  } = actions;
+
+  const currentFormation = getCurrentFormation();
+
+  const handleFreeFormationToggle = () => {
+    const newFreeFormation = !isFreeFormation;
+    setIsFreeFormation(newFreeFormation);
+    if (newFreeFormation) {
+      setSelectedFormation("free");
+      const defaultFormation = generateFormation(playerCount);
+      setCustomFormation(defaultFormation.positions);
+      setDragEnabled(true);
+    } else {
+      setDragEnabled(false);
     }
-  ];
+  };
+
+  const handleReset = () => {
+    console.log('Reset clicked - Clearing all players');
+    // Clear all players and reset state
+    players.forEach(player => removePlayer(player.id));
+    
+    // Reset custom formation to default
+    const defaultFormation = generateFormation(playerCount);
+    setCustomFormation(defaultFormation.positions);
+    
+    // Disable drag mode
+    setDragEnabled(false);
+  };
+
+  const handleClearPlayers = () => {
+    players.forEach(player => removePlayer(player.id));
+    setShowBottomSheet(false);
+  };
 
   return (
-    <div className="min-h-screen bg-pitch-black">
+    <div className="min-h-screen bg-black">
       <Navbar />
+      {/* Spacer for fixed navbar */}
       <div className="h-14 md:h-16" />
-      {/* Hero Section */}
-      <section id="bg-section" className="relative mobile-bg md:desktop-bg min-h-[100svh] py-8 lg:py-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-black to-pink-500/5" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,136,0.1),transparent_70%)]" />
-        
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-600">
-              <Trophy className="w-4 h-4 mr-2 text-accent-green" />
-              #1 Football Management Platform
-            </Badge>
 
-            <h1 className="pt-4 md:pt-8 text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white text-shadow-professional">
-              Manage Your <span className="text-accent-green accent-text">Football</span> Team Like a
-              Champion
-            </h1>
- 
-            <p className="md:block text-xs md:text-2xl text-gray-300 mt-4 mb-8 max-w-3xl mx-auto leading-relaxed text-shadow-professional">
-              Complete football management solution with player analytics, team performance tracking, 
-              match analysis, and strategic planning tools used by professional clubs worldwide.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-5 sm:gap-4 justify-center mb-12 w-full max-w-[200px] sm:max-w-full mx-auto">
-              <Button size="lg" className="text-s sm:text-lg px-8 py-6 bg-green-600 text-white hover:bg-green-500 hover-glow transition-all" asChild>
-                <a href="/lineup-builder">
-                  {/* Start Managing Today */}
-                  Build Your Lineup
-                  <TrendingUp className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="text-s sm:text-lg px-8 py-6 border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-400 transition-all">
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
-              </Button>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-400">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {[1,2,3,4,5].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-gray-700 border-2 border-black" />
-                  ))}
-                </div>
-                <span>Trusted by 10,000+ coaches</span>
+      {/* Team Details - Minimalist */}
+      {showTeamDetails && (
+        <div className="bg-white border-b border-slate-900">
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Team Name</label>
+                <input
+                  type="text"
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  placeholder="Enter team name"
+                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                />
               </div>
-              <div className="hidden sm:block w-px h-4 bg-gray-700" />
-              <span>⭐ 4.9/5 rating from 2,000+ reviews</span>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Lineup Name</label>
+                <input
+                  type="text"
+                  value={lineupName}
+                  onChange={(e) => setLineupName(e.target.value)}
+                  placeholder="Enter lineup name"
+                  className="w-full px-4 py-3 bg-black border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      )}
 
-      {/* Testimonials Section */}
-      {/* <Testimonials /> */}
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 py-4 sm:py-6">
+        {/* Mobile compact top bar */}
+        <MobileTopBar
+          formations={formations}
+          selectedFormation={selectedFormation}
+          onFormationChange={setSelectedFormation}
+          isFreeFormation={isFreeFormation}
+          onFreeFormationToggle={handleFreeFormationToggle}
+          playerCount={playerCount}
+          onPlayerCountChange={handlePlayerCountChange}
+          onSave={() => {
+            const saveBtn = document.querySelector('.actions-save-button') as HTMLElement;
+            if (saveBtn) saveBtn.click();
+          }}
+          onShare={() => {
+            const shareBtn = document.querySelector('.actions-share-button') as HTMLElement;
+            if (shareBtn) shareBtn.click();
+          }}
+          dragEnabled={dragEnabled}
+          onDragToggle={() => setDragEnabled(!dragEnabled)}
+          onReset={handleReset}
+        />
+        
+        {/* Spacer to prevent MobileTopBar from covering content on mobile */}
+        <div className="sm:hidden h-28" />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
+          {/* Left Sidebar - Controls Panel (hidden on mobile) */}
+          <div className="lg:col-span-3 order-1 lg:order-1 hidden sm:block">
+            <ControlsPanel
+              playerCount={playerCount}
+              formations={formations}
+              selectedFormation={selectedFormation}
+              isFreeFormation={isFreeFormation}
+              dragEnabled={dragEnabled}
+              players={players}
+              teamName={teamName}
+              lineupName={lineupName}
+              onPlayerCountChange={handlePlayerCountChange}
+              onFormationChange={setSelectedFormation}
+              onFreeFormationToggle={handleFreeFormationToggle}
+              onDragToggle={() => setDragEnabled(!dragEnabled)}
+              onReset={handleReset}
+            />
+          </div>
 
-      {/* Features Section - Hinge-style Swipe Deck */}
-      <section id="features" className="py-12 sm:py-16 lg:py-20 bg-pitch-black">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mb-3 text-white leading-tight">
-              Everything You Need to <span className="text-accent-green">Win</span>
-            </h2>
-            {/* <p className="text-s sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-2">
-              Swipe through key capabilities with a modern, dynamic feel
-            </p> */}
+          {/* Main Pitch Area */}
+          <div className="lg:col-span-5 flex justify-center order-2 lg:order-2">
+            <PitchField
+              teamName={teamName}
+              onTeamNameChange={setTeamName}
+              currentFormation={currentFormation}
+              isFreeFormation={isFreeFormation}
+              customFormation={customFormation}
+              players={players}
+              playerCount={playerCount}
+              dragEnabled={dragEnabled}
+              draggedPlayer={draggedPlayer}
+              onAddPlayer={addPlayer}
+              onPlayerClick={handlePlayerClick}
+              onPlayerDrag={handlePlayerDrag}
+              onPositionDrag={handlePositionDrag}
+              onPlayerMouseDown={handleMouseDown}
+              onPlayerTouchStart={handleTouchStart}
+              onPositionMouseDown={handlePositionMouseDown}
+              onPositionTouchStart={handlePositionTouchStart}
+              getPlayerAtPosition={getPlayerAtPosition}
+            />
+          </div>
+
+          {/* Right Sidebar - Players List */}
+          <div className="lg:col-span-4 order-3 lg:order-3">
+            <PlayersList
+              players={players}
+              playerCount={playerCount}
+              selectedPlayer={selectedPlayer}
+              dragEnabled={dragEnabled}
+              onPlayerClick={handlePlayerClick}
+              onClearPlayers={handleClearPlayers}
+            />
           </div>
         </div>
+      </div>
 
-        <SwipeDeck items={features} />
+      {/* Bottom padding for mobile nav/FAB overlap protection */}
+      <div className="h-24 md:hidden" />
 
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mt-10 sm:mt-14">
-            <Button 
-              size="lg" 
-              className="bg-green-600 hover:bg-green-500 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-green-500/25 transition-all duration-300"
-            >
-              Get Started Today
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <PlanCard plans={plans} />
-      
-      {/* Footer */}
-      <Footer />
-      
-      {/* Mobile Bottom Navigation */}
-      <BottomNav />
+      {/* Bottom Sheet for Player Details */}
+      {showBottomSheet && selectedPlayer && (
+        <PlayerDetailsModal
+          player={players.find(p => p.id === selectedPlayer)!}
+          onClose={() => setShowBottomSheet(false)}
+          onUpdate={updatePlayer}
+          onRemove={(id) => {
+            removePlayer(id);
+            setShowBottomSheet(false);
+          }}
+        />
+      )}
     </div>
   );
 }
+

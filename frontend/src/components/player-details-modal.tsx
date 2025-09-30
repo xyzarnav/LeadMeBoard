@@ -37,7 +37,7 @@ export function PlayerDetailsModal({ player, onClose, onUpdate, onRemove }: Play
               value={player.name}
               onChange={(e) => onUpdate(player.id, { name: e.target.value })}
               placeholder="Enter player name"
-              className="w-full px-3 py-2 bg-black border border-slate-800 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full px-4 py-2 bg-black border border-slate-800 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
           

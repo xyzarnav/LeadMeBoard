@@ -34,7 +34,7 @@ export function SimpleDropdown({ items, selectedId, onSelect, disabled }: Simple
         disabled={disabled}
         onClick={() => setOpen(v => !v)}
         className={cn(
-          'w-full h-10 pl-3 pr-8 py-2 rounded-lg text-sm text-slate-200 flex items-center justify-between',
+          'w-full h-10 pl-3 pr-3 py-2 rounded-lg text-sm text-slate-200 flex items-center justify-between',
           disabled ? 'opacity-60 cursor-not-allowed bg-slate-800/30' : 'bg-slate-800/40 hover:bg-slate-800/60'
         )}
       >

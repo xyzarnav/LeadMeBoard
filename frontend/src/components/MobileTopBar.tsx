@@ -55,9 +55,9 @@ export function MobileTopBar({
               <span className="truncate">{isFreeFormation ? 'Free' : 'Tactics'}</span>
             </Button>
 
-            <div className="relative flex-2 ">
+            <div className="relative flex-[2] min-w-[175px]">
               {isFreeFormation ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-1">
                   <Button
                     onClick={onDragToggle}
                     size="sm"
@@ -74,9 +74,9 @@ export function MobileTopBar({
                   </Button>
                 </div>
               ) : (
-                <div>
+                <div className="w-full">
                   {/* SimpleDropdown from ui/dropdown-menu */}
-                  <SimpleDropdown
+                  <SimpleDropdown 
                     items={formations.map(f => ({ id: f.id, name: f.name }))}
                     selectedId={selectedFormation}
                     onSelect={(id: string) => onFormationChange(id)}
@@ -90,11 +90,11 @@ export function MobileTopBar({
           {/* Right group: save/share */}
           <div className="flex items-center gap-1 pl-2">
             <Button onClick={onSave} size="sm" className="h-10 px-3 rounded-lg bg-emerald-600 text-white flex items-center gap-2">
-              <Save className="w-4 h-4" />
+              <Save className="w-6 h-4" />
             </Button>
-            <Button onClick={onShare} variant="outline" size="sm" className="h-10 px-3 rounded-lg text-slate-200 border-slate-700/50">
+            {/* <Button onClick={onShare} variant="outline" size="sm" className="h-10 px-3 rounded-lg text-slate-200 border-slate-700/50">
               <Share2 className="w-4 h-4" />
-            </Button>
+            </Button> */}
           </div>
         </div>
 
